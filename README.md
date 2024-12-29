@@ -2,9 +2,14 @@ Skills at a glance
 1.  Design and implement data storage (15–20%)
 2.  Develop data processing (40–45%)
 3.  Secure, monitor, and optimize data storage and data processing (30–35%)
+
+- https://learn.microsoft.com/en-us/shows/exam-readiness-zone/preparing-for-dp-203-design-and-implement-data-storage-1-of-3
+- https://learn.microsoft.com/en-us/azure/architecture/best-practices/data-partitioning-strategies
 -----------
 1. Design and implement data storage (15–20%)
     - Implement a partition strategy
+       - https://learn.microsoft.com/en-us/azure/architecture/best-practices/data-partitioning-strategies
+       - https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-best-practices
     -     - - Implement a partition strategy for files
     -     - - Implement a partition strategy for analytical workloads
     -     - - Implement a partition strategy for streaming workloads
