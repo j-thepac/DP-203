@@ -23,11 +23,8 @@
   - Apache Kafka
   - Hadoop and more, in your Azure environment.
 -------------------
-- Databricks vs Synapse
-  - Databricks(Premium) - AutoScaling ,Query from external relational stores , 
-  - Synapse - No ,  nO
--------------------
 - Databricks 
+  - Simialr to Synapse Notebooks 
   - SELECT /*+ SKEW('orders', 'o_custId') */ * FROM orders, customers WHERE o_custId = c_custId; --Skew Data
   -  Types:
     - Standard Cluster: General-purpose, suitable for various workloads.
