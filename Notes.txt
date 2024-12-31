@@ -4,7 +4,6 @@
   - https://learn.microsoft.com/en-us/training/modules/secure-azure-storage-account/
   - https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-access-control
 -------------------
-- SP vs Managed Identity
 
 - Lambda vs kappa
   - Lambda : Raw and Streaming served by different activities in same pipeline
@@ -39,9 +38,6 @@
   - Azure Functions
   - Azure App Service WebJobs
 -------------------
-
-
----------------
 - Stream Analytics 
   - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-solution-patterns
   - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-parallelization
@@ -50,6 +46,7 @@
   - Create input (Event Hub/IoT Hub/ gen2)
   - Create output  (gen2 / Fx / Table / Cosmos/Event Hubs / Iothub/ SQL, PBI) - json , csv , avro
   - Error: "was sent later than configured tolerance" - Chnage withWaterMark(“15 minutes”) 
+  - 6 SUs = 1 node
   - Window
     - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-window-functions
     - Tumbling windows - aggregate all events for that same time period. 
@@ -114,21 +111,24 @@
     - Bucket Same values in 1 Bucket
     - df.write.partitionBy("year").bucketBy(2, "id").mode("overwrite").saveAsTable("bucketed_table")
   - Partitioning
-    - Sharding  / horizontal partitions (each record into different Partition) - Same Schema
-      - https://learn.microsoft.com/en-us/azure/architecture/patterns/sharding
-      - WITH ( PARTITION KEY = C);
-      - LookUp : 
-          - Requires look Up table
-          -  shard key value maps to a physical partition
-      - Hash partitioning : Use hash function ,even data and load distribution.
-      - Range partitioning : 1 to n in shard A ,  n+1 to m  stored in shard B
+    - https://learn.microsoft.com/en-us/azure/architecture/best-practices/data-partitioning#designing-partitions
+    - Sharding  
+        - horizontal partitions (each record into different Partition) 
+        - Same Schema
+        - https://learn.microsoft.com/en-us/azure/architecture/patterns/sharding
+        - WITH ( PARTITION KEY = C);
+        - LookUp : 
+            - Requires look Up table
+            -  shard key value maps to a physical partition
+        - Hash partitioning : Use hash function ,even data and load distribution.
+        - Range partitioning : 1 to n in shard A ,  n+1 to m  stored in shard B
 
     - Vertical Paritioning 
-      - Each Column of Data in Seperate Partition /Shard eg: Avro
-      - When Only particular columns are important 
+        - Each Column of Data in Seperate Partition /Shard eg: Avro
+        - When Only particular columns are important 
 
     - Functional Paritioning
-      - Logic based 
+        - Logic based 
 
   - Cluster vs CLuster ColumnStore
   - Distribution
@@ -197,7 +197,9 @@
 
     - Gen2 
       - Data residency affect performance
-      - Geo-replication will affect pricing,
+      - Geo-replication will affect pricing
+      - https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-best-practices
+      - Data Residence : Large File less Cost and more Performance
       
     - Blob 
       - (https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-best-practices#structure-data-sets 
