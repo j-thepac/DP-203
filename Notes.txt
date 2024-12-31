@@ -5,8 +5,7 @@
   - https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-access-control
 -------------------
 - SP vs Managed Identity
-- Replicated Vs Hash Vs RoundRobin
-- Cluster vs CLuster ColumnStore
+
 - Lambda vs kappa
   - Lambda : Raw and Streaming served by different activities in same pipeline
   - Kappa : Both Raw and Streaming is done by same activity in same pipleien (Trigger =once , continues /processingtime))
@@ -40,8 +39,8 @@
   - Azure Functions
   - Azure App Service WebJobs
 -------------------
-- BucketBy vs partitionBy 
-  - df.write.partitionBy("year").bucketBy(2, "id").mode("overwrite").saveAsTable("bucketed_table")
+
+  - 
 -------------------
 - saveAsTable vs saveAsTempTable
 ---------------
@@ -113,7 +112,9 @@
                 FILE_FORMAT = [ParquetFF]
         ) AS
         SELECT * FROM [<myview>];
-
+  - BucketBy vs partitionBy 
+    - Bucket Same values in 1 Bucket
+    - df.write.partitionBy("year").bucketBy(2, "id").mode("overwrite").saveAsTable("bucketed_table")
   - Partitioning
     - Sharding  / horizontal partitions (each record into different Partition) - Same Schema
       - https://learn.microsoft.com/en-us/azure/architecture/patterns/sharding
@@ -121,7 +122,7 @@
       - LookUp : 
           - Requires look Up table
           -  shard key value maps to a physical partition
-      - Hash partitioning : Usehash function ,even data and load distribution.
+      - Hash partitioning : Use hash function ,even data and load distribution.
       - Range partitioning : 1 to n in shard A ,  n+1 to m  stored in shard B
 
     - Vertical Paritioning 
@@ -131,9 +132,10 @@
     - Functional Paritioning
       - Logic based 
 
+  - Cluster vs CLuster ColumnStore
   - Distribution
-    - Hash = querying 
-    - Round robin =loading data.
+    - Hash = querying Easier
+    - Round robin =loading data is simple
     - Replicated = small tables.
 
   - Change data capture VS change tracking Vs merge replication Vs snapshot replication
