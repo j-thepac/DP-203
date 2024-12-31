@@ -302,4 +302,5 @@
 - Conditional Access:--	if a user wants to access a resource, then they must complete Like Authentication
 - SQL Authentication:--	Usn /Pass
 - SAS:--	A security token that can be attached to a URI (bearer)
+- Transparent data encryption:-- Encrypting data at rest (Dedicated and Blob) ie., Complete Container is encrypted
 
