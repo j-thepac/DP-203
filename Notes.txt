@@ -286,6 +286,7 @@
 - Blob vs GEn2:--	blob = flat namespace , Gen2 = directories
 - Synapse:--	https:--//microsoftlearning.github.io/dp-203-azure-data-engineer/Instructions/Labs/01-Explore-Azure-Synapse.html
 - Cosmos DB and Azure SQL:--	Can be used an Operational / Transaction DB as they support data Auto sync with Synapse (analytical store support)
+- **Database template**:	Templetes offered in Synapse to create out of the box databasese like - **Agriculture , Automotive etc.,
 
 ### Security
 - Microsoft Entra ID:--	"directory service contain secured objects - user accounts , Resource Accounts 
