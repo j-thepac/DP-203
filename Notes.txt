@@ -40,9 +40,7 @@
   - Azure App Service WebJobs
 -------------------
 
-  - 
--------------------
-- saveAsTable vs saveAsTempTable
+
 ---------------
 - Stream Analytics 
   - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-solution-patterns
@@ -267,4 +265,5 @@
       	SELECT * FROM OPENROWSET('CosmosDB',
         'Account=my-cosmos-db;Database=my-db;Key=abcd1234....==',
         [my-container]) as T
+  - saveAsTable vs saveAsTempTable
 ---------------
