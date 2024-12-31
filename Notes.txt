@@ -128,11 +128,12 @@
         - Same Schema
         - https://learn.microsoft.com/en-us/azure/architecture/patterns/sharding
         - WITH ( PARTITION KEY = C);
-        - LookUp : 
-            - Requires look Up table
-            -  shard key value maps to a physical partition
-        - Hash partitioning : Use hash function ,even data and load distribution.
-        - Range partitioning : 1 to n in shard A ,  n+1 to m  stored in shard B
+        - Types
+          - LookUp : 
+              - Requires look Up table
+              -  shard key value maps to a physical partition
+          - Hash partitioning : Use hash function ,even data and load distribution.
+          - Range partitioning : 1 to n in shard A ,  n+1 to m  stored in shard B
 
     - Vertical Paritioning 
         - Each Column of Data in Seperate Partition /Shard eg: Avro
