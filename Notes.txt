@@ -6,11 +6,7 @@
   - Avro
     - Row Based
     - Easy to Write
-  
-----------
-- Token 
-  - https://learn.microsoft.com/en-us/training/modules/secure-azure-storage-account/
-  - https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-access-control
+
 -------------------
 - Lambda vs kappa
   - Lambda : Raw and Streaming served by different activities in same pipeline
@@ -177,6 +173,7 @@
 - storage accounts
   - https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview
   - https://learn.microsoft.com/en-us/training/modules/secure-azure-storage-account
+  - https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-access-control
   - Advanced Threat Protection
     - Microsoft Defender for Cloud.
     - Detects unusual and potentially harmful attempts to access or exploit storage accounts.
