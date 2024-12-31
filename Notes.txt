@@ -233,7 +233,7 @@
 -------------------
 - ADF:
   - https://learn.microsoft.com/en-us/azure/data-factory/monitor-configure-diagnostics  
-  - Invoke-AzDataFactoryV2Pipeline
+  - CLI cmd to tart ADF  $Invoke-AzDataFactoryV2Pipeline
   - https://learn.microsoft.com/en-us/azure/data-factory/pipeline-trigger-troubleshoot-guide
   -  Settings > Diagnostci Setting > Send to Log Analytics>Various logs relevant to your workloads to send to Log Analytics tables. 
 -------------------
