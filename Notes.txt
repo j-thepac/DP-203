@@ -1,0 +1,268 @@
+- https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/stream-processing
+- Parq vs Avro
+- Token 
+  - https://learn.microsoft.com/en-us/training/modules/secure-azure-storage-account/
+  - https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-access-control
+-------------------
+- SP vs Managed Identity
+- Replicated Vs Hash Vs RoundRobin
+- Cluster vs CLuster ColumnStore
+- Lambda vs kappa
+  - Lambda : Raw and Streaming served by different activities in same pipeline
+  - Kappa : Both Raw and Streaming is done by same activity in same pipleien (Trigger =once , continues /processingtime))
+-------------------
+- Azure HDInsight
+  - Apache Spark
+  - Apache Hive
+  - LLAP
+  - Apache Kafka
+  - Hadoop and more, in your Azure environment.
+-------------------
+- Databricks vs Synapse
+  - Databricks(Premium) - AutoScaling ,Query from external relational stores , 
+  - Synapse - No ,  nO
+-------------------
+- Databricks 
+  - SELECT /*+ SKEW('orders', 'o_custId') */ * FROM orders, customers WHERE o_custId = c_custId; --Skew Data
+  -  Types:
+    - Standard Cluster: General-purpose, suitable for various workloads.
+    - High Concurrency Cluster: Optimized for concurrent users and low-latency queries.
+    - Job Cluster: Designed for scheduled jobs, cost-effective with auto-termination.
+    - Interactive Cluster: For ad-hoc analysis and interactive workloads.
+    - Single Node Cluster: For development and testing with a single node.
+    - Autoscaling Cluster: Automatically adjusts resources based on demand.
+-------------------
+- Difference Bwtween : https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/stream-processing
+  - Azure Stream Analytics
+  - HDInsight with Spark Streaming
+  - Apache Spark in Azure Databricks
+  - Apache Kafka streams API
+  - Azure Functions
+  - Azure App Service WebJobs
+-------------------
+- BucketBy vs partitionBy 
+  - df.write.partitionBy("year").bucketBy(2, "id").mode("overwrite").saveAsTable("bucketed_table")
+-------------------
+- saveAsTable vs saveAsTempTable
+---------------
+- Stream Analytics 
+  - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-solution-patterns
+  - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-parallelization
+  - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-window-functions
+  - Create Stream Analytics in Azure Portal
+  - Create input (Event Hub/IoT Hub/ gen2)
+  - Create output  (gen2 / Fx / Table / Cosmos/Event Hubs / Iothub/ SQL, PBI) - json , csv , avro
+  - Error: "was sent later than configured tolerance" - Chnage withWaterMark(“15 minutes”) 
+  - Window
+    - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-window-functions
+    - Tumbling windows - aggregate all events for that same time period. 
+    - Hopping windows -A ggregate the events for a potentially different time period
+    - Sliding windows -aggregations for so many events, not at identical timelapses.
+    - Session - Extend the current window if an event occurs within the mentioned time
+    - Snapshot windows aggregate all events with the same timestamp.
+    - Query he number of cars within a three-minute window going through a toll station that has three tollbooths:
+        ```select COUNT(*) AS Count, TollBoothId into stream_analytics 
+        from iot_event_hub Timestamp By TS_Kafka 
+        Partition By PartitionId
+        group by tumbling_window(second,2), TollBoothId, PartitionId
+        ``` -- It has to use some timestamp for operation ie., TS_Kafka from src 
+  - parallelization = partition key
+  - Each Statement = 1 SU (Streaming Unit ) and Each partition = 1 SU 
+  - Streaming : When the Backlogged Input Events metric > zero, the job is not able to process all incoming events.Increase SU (Streaming Units)
+  - Temporal Window : Tumbling ,Hopping ,Sliding (similar to hopping but contains a minimum of one event and belong to more than one sliding window ), , Session,, Snapshot
+    SELECT MAX(c) AS mx INTO [output]. FROM [input] TIMESTAMP BY EventProcessedUtcTime -- **Auto_TS_Colum
+    GROUP BY TumblingWindow(minute, 1) # HoppingWindow(second, 60, 30) , SlidingWindow(minute, 1),SessionWindow(second, 20, 60) , 
+ -- **GROUP BY System.Timestamp() -- **session window (groups events by identical timestamp)
+-------------------
+- SQL / Dedicated /  Azure Synapse Analytics database 
+  - https://learn.microsoft.com/en-us/azure/architecture/best-practices/data-partitioning
+  - https://learn.microsoft.com/en-us/training/modules/choose-storage-approach-in-azure/
+  - https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/massively-parallel-processing-mpp-architecture 
+  - https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/quickstart-scale-compute-tsql#check-dedicated-sql-pool-formerly-sql-dw-state
+  - https://learn.microsoft.com/en-us/training/modules/load-optimize-data-into-relational-data-warehouse/
+  - https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-manage-monitor#monitor-waiting-queries
+  - Scale out = better performance, or scale back compute to save costs.
+  - Sys Objects
+    - SELECT name FROM sys.objects WHERE type = 'V' AND name LIKE 'dm_pdw%';
+    - EXEC sp_help 'sys.objects';
+  - Queries
+    - COPY INTO [dbo].[T] FROM 'https://BlobStorage.blob.core.windows.net/Folder'
+      WITH ( FILE_TYPE = 'CSV',
+            FIELDTERMINATOR = ',',
+            FIELDQUOTE = '')
+    - CREATE TABLE dbo.T2
+        WITH
+        ( DISTRIBUTION = REPLICATE,
+          CLUSTERED COLUMNSTORE INDEX )
+        AS Select * from T 
+    - INSERT INTO dbo.T Select * from dbo.T2
+    - CETAS
+        CREATE EXTERNAL FILE FORMAT [ParquetFF] WITH (
+            FORMAT_TYPE = PARQUET,
+            DATA_COMPRESSION = 'org.apache.hadoop.io.compress.SnappyCodec'
+        );
+        GO
+        CREATE EXTERNAL DATA SOURCE [SynapseSQLwriteable] WITH (
+            LOCATION = 'https**://<mystoageaccount>.dfs.core.windows.net/<mycontainer>/<mybaseoutputfolderpath>',
+            CREDENTIAL = [WorkspaceIdentity]
+        );
+        GO
+        CREATE EXTERNAL TABLE [dbo].[<myexternaltable>] WITH (
+                LOCATION = '<myoutputsubfolder>/',
+                DATA_SOURCE = [SynapseSQLwriteable],
+                FILE_FORMAT = [ParquetFF]
+        ) AS
+        SELECT * FROM [<myview>];
+
+  - Partitioning
+    - Sharding  / horizontal partitions (each record into different Partition) - Same Schema
+      - https://learn.microsoft.com/en-us/azure/architecture/patterns/sharding
+      - WITH ( PARTITION KEY = C);
+      - LookUp : 
+          - Requires look Up table
+          -  shard key value maps to a physical partition
+      - Hash partitioning : Usehash function ,even data and load distribution.
+      - Range partitioning : 1 to n in shard A ,  n+1 to m  stored in shard B
+
+    - Vertical Paritioning 
+      - Each Column of Data in Seperate Partition /Shard eg: Avro
+      - When Only particular columns are important 
+
+    - Functional Paritioning
+      - Logic based 
+
+  - Distribution
+    - Hash = querying 
+    - Round robin =loading data.
+    - Replicated = small tables.
+
+  - Change data capture VS change tracking Vs merge replication Vs snapshot replication
+    - Change Tracking: 
+      - Uses a internal log 
+      - lightweight 
+      -  Tracks row was changed without tracking the data that was changed
+
+    - Change Data Capture (CDC):
+        - Internally uses a seperate Table (sys.sp_cdc_enable_table)
+        - Identifies Each Row That Has Changed
+        - Better than Change tracking
+
+    - Merge Replication: 
+      - complex solution 
+      - Merge
+
+    - Snapshot Replication: 
+      - snapshot of the data at a specific point in time 
+      -  does not track changes incrementally.
+      
+  - CREATE MATERIALIZED VIEW mv WITH (distribution = hash(c), FOR_APPEND) AS SELECT * FROM T  ;
+    - Data with snapshot is created 
+    - REFRESH MATERIALIZED VIEW employee_summary; -- Data is static and needs to be refreshed
+------------
+- storage accounts
+  - https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview
+  - https://learn.microsoft.com/en-us/training/modules/secure-azure-storage-account
+  - Advanced Threat Protection
+    - Microsoft Defender for Cloud.
+    - Detects unusual and potentially harmful attempts to access or exploit storage accounts.
+  - Access 
+      RBAC vs POSIX vs ACL(access control list ) vs SAS vs Network 
+      - Network
+        - Range of IP addr (Storage > Networking > )
+
+      - RBAC (Role-Based Access Control)
+        - based on roles
+
+      - POSIX (Portable Operating System Interface)
+        - chmod -R 755 my_directory
+
+      - ACL (access control list)
+        - fine-grained access control 
+        - 421 : RWX (For Delete every directory within it, requires Read + Write + Execute )
+
+      - SAS (Shared Access Signatures)
+        - token to grantaccess attached to a URI.
+        - Storage > Security > Access keys > Primary and Secondary
+        - Types
+          - Service Level  -allow access to specific resources 
+          - Account LEvel - Service level Access + More eg: create file systems.
+
+      - Blob Storage	https://*mystorageaccount*.blob.core.windows.net/*mycontainer*/*myblob*
+        Static website (Blob Storage)	https://<storage-account>.web.core.windows.net
+        Data Lake Storage	https://<storage-account>.dfs.core.windows.net
+        Azure Files	https://<storage-account>.file.core.windows.net
+        Queue Storage	https://<storage-account>.queue.core.windows.net
+        Table Storage	https://<storage-account>.table.core.windows.net
+      - Upgrade and Movement to another region is possible 
+
+    - Gen2 
+      - Data residency affect performance
+      - Geo-replication will affect pricing,
+      
+    - Blob 
+      - (https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-best-practices#structure-data-sets 
+      -  https://learn.microsoft.com/en-us/training/modules/store-app-data-with-azure-blob-storage/3-design-organization-strategy )
+      -https://learn.microsoft.com/en-us/training/modules/secure-azure-storage-account/
+      - flat
+      - Structure -  finance/budgets/2017/q1.xls
+      - 3 types : Block (independent, upload , Download) , APpend (Stream ,Logs) , Page (random access used by VM)
+      - Reading of files is billed with a 4-MB operation
+      -  automatically encrypted by Storage Service Encryption (SSE) with a 256-bit Advanced Encryption Standard (AES) cipher
+      - Support CORS (cross-origin resource sharing ) Api
+      - Access
+        - Storage Blob Data Owner: All access 
+        - Storage Blob Data Contributor:  allows for read, write, and delete 
+        - Storage Blob Data Reader allows for read access
+        - Storage Blog Data Delegator : user delegation key ,used to sign SAS tokens.
+
+-------------------
+- ADF:
+  - https://learn.microsoft.com/en-us/azure/data-factory/monitor-configure-diagnostics  
+  - Invoke-AzDataFactoryV2Pipeline
+  - https://learn.microsoft.com/en-us/azure/data-factory/pipeline-trigger-troubleshoot-guide
+  -  Settings > Diagnostci Setting > Send to Log Analytics>Various logs relevant to your workloads to send to Log Analytics tables. 
+-------------------
+- Microsoft Purview (LeanIX ) 
+  - https://learn.microsoft.com/en-us/purview/concept-data-lineage
+  - https://learn.microsoft.com/en-us/purview/unified-catalog-search
+  - Catalog and Governance and Audit
+  - data lineage
+  - Create PurView > Add DataSource > Scan using Managed Identity > Analyse Result using PBI or Builtin
+  - master key in the Azure SQL database for lineage to work.
+  - Microsoft Purview governance portal : view and search Metadata
+-------------------
+- Hive :
+  - https://learn.microsoft.com/en-us/azure/data-factory/tutorial-transform-data-hive-virtual-network
+  - HDInsight cluster URL :  https://<clustername>.azurehdinsight.net.
+  - CREATE EXTERNAL TABLE T (id string) ROW FORMAT DELIMITED FIELDS TERMINATED BY ' ' 
+    STORED AS TEXTFILE LOCATION 'wasb://data@datastg.blob.core.windows.net/devices/';
+    INSERT OVERWRITE TABLE T
+    Select id FROM T2
+-------------------
+- Synapse :
+  - https://learn.microsoft.com/en-us/training/modules/secure-data-warehouse-azure-synapse-analytics/2-understand-network-security-options
+  - Lookup : Denormalize
+  - security options
+    - Firewall rules : Type of IP that is allowed  Eg : Synapse > Security > Firewall > Add IPS
+    - Virtual networks (VPN) : 
+      - to securely communicate with Other Networks 
+      - Managed workspace Virtual Network : 
+        - managed By Synapse (spark Cluster , Dedicated, Serverless  )
+        - Check box while creating Synapse 
+    - Private endpoints:to connect up its various components through private IP address
+    - Cosmos + Spark + LinkedService
+      df = spark.read #write
+          .format(""cosmos.olap"")\
+          .option(""spark.synapse.linkedService"", ""my_linked_service"")\
+          .option(""spark.cosmos.container"", ""my-container"")\
+          .load()
+        %%sql
+        CREATE TABLE products using cosmos.olap options (
+          spark.synapse.linkedService 'my_linked_service',
+          spark.cosmos.container 'my-container'
+        ); -- **SELECT productID, productName FROM products;"
+    - Serverless + Cosmos + LS
+      	SELECT * FROM OPENROWSET('CosmosDB',
+        'Account=my-cosmos-db;Database=my-db;Key=abcd1234....==',
+        [my-container]) as T
+---------------
