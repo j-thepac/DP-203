@@ -49,11 +49,12 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
   - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-parallelization
   - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-window-functions
   - Create Stream Analytics in Azure Portal
-  - Create input (Event Hub/IoT Hub/ gen2)
-  - Create output  (gen2 / Fx / Table / Cosmos/Event Hubs / Iothub/ SQL, PBI) - json , csv , avro
-  - Create Query (as below)
+    - Create input (Event Hub/IoT Hub/ gen2)
+    - Create output  (gen2 / Fx / Table / Cosmos/Event Hubs / Iothub/ SQL, PBI) - json , csv , avro
+    - Create Query (as below)
   - Error: "was sent later than configured tolerance" - Chnage withWaterMark(“15 minutes”) 
   - 6 SUs = 1 node
+  - parallelization = partition key
   - Window
     - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-window-functions
     - Tumbling windows - aggregate all events for that same time period. 
@@ -61,14 +62,13 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
     - Sliding windows -aggregations for so many events, not at identical timelapses.
     - Session - Extend the current window if an event occurs within the mentioned time
     - Snapshot windows aggregate all events with the same timestamp.
-    - Query he number of cars within a three-minute window going through a toll station that has three tollbooths:
+    - Query "the number of cars within a three-minute window going through a toll station that has three tollbooths":
         ```select COUNT(*) AS Count, TollBoothId into stream_analytics 
         from iot_event_hub Timestamp By TS_Kafka 
-        Partition By PartitionId
+        Partition By PartitionId  -- similar to window partition
         group by tumbling_window(second,2), TollBoothId, PartitionId
-        ``` -- It has to use some timestamp for operation ie., TS_Kafka from src 
-  - parallelization = partition key
-  - Each Statement = 1 SU (Streaming Unit ) and Each partition = 1 SU 
+        ``` -- It has to use some timestamp for operation ie., TS_Kafka from src  
+  - Each Statement (select )= 1 SU (Streaming Unit ) and Each partition = 1 SU 
   - Streaming : When the Backlogged Input Events metric > zero, the job is not able to process all incoming events.Increase SU (Streaming Units)
   - Temporal Window (Time Based):
     - Types :
