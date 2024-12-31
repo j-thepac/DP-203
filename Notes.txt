@@ -276,3 +276,30 @@
         [my-container]) as T
   - saveAsTable vs saveAsTempTable
 ---------------
+## Glossary
+### General
+- Data integration:--	  Establishing links between data
+- Data consolidation:--	To extract Data from multiple data sources into a consistent structure
+- Data Lake Storage Security:--   Access control lists (ACLs) and Portable Operating System Interface (POSIX) permissions -you can set permissions at a directory level or file level
+- Data Lake redundancy:--	provide data redundancy in a single data center with locally redundant storage (LRS), or to a secondary region by using the Geo-redundant storage (GRS) option.
+- Data Lake Hierarchical Namespace:--	To enable  you can select the option to Enable hierarchical namespace while creating Storage account
+- Blob vs GEn2:--	blob = flat namespace , Gen2 = directories
+- Synapse:--	https:--//microsoftlearning.github.io/dp-203-azure-data-engineer/Instructions/Labs/01-Explore-Azure-Synapse.html
+- Cosmos DB and Azure SQL:--	Can be used an Operational / Transaction DB as they support data Auto sync with Synapse (analytical store support)
+
+### Security
+- Microsoft Entra ID:--	"directory service contain secured objects - user accounts , Resource Accounts 
+ If a user and an instance of Azure Synapse Analytics are part of the same Microsoft Entra ID ,then user can access synapse"
+- Azure Active Directory (Entra ID):--	Used to Create 1 Functional ID (secret ) called Serive Principle and used across all applications to communicate with each other
+- Managed identity (service principal):--	managed by Azure
+- SP (Serivce Principle):--	Managed by User ie., renew etc.,
+- FireWalls:--	IP address that is allowed or denied access to an Azure Synapse workspace
+- Azure Virtual Network (VNet):--	Azure resources to securely communicate with other virtual networks,
+- Managed workspace Virtual Network:--	The Virtual Network managed by Azure Synapse
+- Private endpoints:--	"enables you to securely connect up its various components through endpoints
+ uses a private IP address from your Virtual Network"
+- Managed private endpoints:--	Private endpoints in Managed workspace Virtual Network.
+- Conditional Access:--	if a user wants to access a resource, then they must complete Like Authentication
+- SQL Authentication:--	Usn /Pass
+- SAS:--	A security token that can be attached to a URI (bearer)
+
