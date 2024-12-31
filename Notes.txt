@@ -1,4 +1,13 @@
 - Parq vs Avro
+  - Parq: 
+    - Column Based 
+    - Easy to Read
+    - Schema is maintained
+  - Avro
+    - Row Based
+    - Easy to Write
+  
+----------
 - Token 
   - https://learn.microsoft.com/en-us/training/modules/secure-azure-storage-account/
   - https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-access-control
