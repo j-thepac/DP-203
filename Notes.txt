@@ -4,7 +4,6 @@
   - https://learn.microsoft.com/en-us/training/modules/secure-azure-storage-account/
   - https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-access-control
 -------------------
-
 - Lambda vs kappa
   - Lambda : Raw and Streaming served by different activities in same pipeline
   - Kappa : Both Raw and Streaming is done by same activity in same pipleien (Trigger =once , continues /processingtime))
@@ -63,9 +62,18 @@
   - parallelization = partition key
   - Each Statement = 1 SU (Streaming Unit ) and Each partition = 1 SU 
   - Streaming : When the Backlogged Input Events metric > zero, the job is not able to process all incoming events.Increase SU (Streaming Units)
-  - Temporal Window : Tumbling ,Hopping ,Sliding (similar to hopping but contains a minimum of one event and belong to more than one sliding window ), , Session,, Snapshot
-    SELECT MAX(c) AS mx INTO [output]. FROM [input] TIMESTAMP BY EventProcessedUtcTime -- **Auto_TS_Colum
-    GROUP BY TumblingWindow(minute, 1) # HoppingWindow(second, 60, 30) , SlidingWindow(minute, 1),SessionWindow(second, 20, 60) , 
+  - Temporal Window : 
+    - Tumbling 
+    - Hopping 
+    - Sliding (similar to hopping but contains a minimum of one event and belong to more than one sliding window ),
+    - Session
+    - Snapshot
+    - Query
+      SELECT MAX(c) AS mx 
+      INTO [output] 
+      FROM [input] TIMESTAMP BY EventProcessedUtcTime -- **Auto_TS_Colum
+      GROUP BY TumblingWindow(minute, 1) 
+      # HoppingWindow(second, 60, 30) , SlidingWindow(minute, 1),SessionWindow(second, 20, 60) 
  -- **GROUP BY System.Timestamp() -- **session window (groups events by identical timestamp)
 -------------------
 - SQL / Dedicated /  Azure Synapse Analytics database 
@@ -216,7 +224,6 @@
         - Storage Blob Data Contributor:  allows for read, write, and delete 
         - Storage Blob Data Reader allows for read access
         - Storage Blog Data Delegator : user delegation key ,used to sign SAS tokens.
-
 -------------------
 - ADF:
   - https://learn.microsoft.com/en-us/azure/data-factory/monitor-configure-diagnostics  
