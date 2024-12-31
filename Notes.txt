@@ -226,7 +226,7 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
       -  https://learn.microsoft.com/en-us/training/modules/store-app-data-with-azure-blob-storage/3-design-organization-strategy )
       -https://learn.microsoft.com/en-us/training/modules/secure-azure-storage-account/
       - flat
-      - Structure -  finance/budgets/2017/q1.xls
+      - Folder Structure -  domain/subDomain/2017/q1.xls
       - 3 types : Block (independent, upload , Download) , APpend (Stream ,Logs) , Page (random access used by VM)
       - Reading of files is billed with a 4-MB operation
       -  automatically encrypted by Storage Service Encryption (SSE) with a 256-bit Advanced Encryption Standard (AES) cipher
