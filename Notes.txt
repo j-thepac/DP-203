@@ -49,6 +49,7 @@
   - Create Stream Analytics in Azure Portal
   - Create input (Event Hub/IoT Hub/ gen2)
   - Create output  (gen2 / Fx / Table / Cosmos/Event Hubs / Iothub/ SQL, PBI) - json , csv , avro
+  - Create Query (as below)
   - Error: "was sent later than configured tolerance" - Chnage withWaterMark(“15 minutes”) 
   - 6 SUs = 1 node
   - Window
