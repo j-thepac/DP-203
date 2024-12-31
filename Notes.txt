@@ -75,6 +75,7 @@
       GROUP BY TumblingWindow(minute, 1) 
       # HoppingWindow(second, 60, 30) , SlidingWindow(minute, 1),SessionWindow(second, 20, 60) 
  -- **GROUP BY System.Timestamp() -- **session window (groups events by identical timestamp)
+  - Streaming : When the Backlogged Input Events metric > zero, the job is not able to process all incoming events.Increase SU (Streaming Units) 
 -------------------
 - SQL / Dedicated /  Azure Synapse Analytics database 
   - https://learn.microsoft.com/en-us/azure/architecture/best-practices/data-partitioning
