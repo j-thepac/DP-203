@@ -64,12 +64,13 @@
   - parallelization = partition key
   - Each Statement = 1 SU (Streaming Unit ) and Each partition = 1 SU 
   - Streaming : When the Backlogged Input Events metric > zero, the job is not able to process all incoming events.Increase SU (Streaming Units)
-  - Temporal Window : 
-    - Tumbling 
-    - Hopping 
-    - Sliding (similar to hopping but contains a minimum of one event and belong to more than one sliding window ),
-    - Session
-    - Snapshot
+  - Temporal Window (Time Based):
+    - Types :
+        - Tumbling 
+        - Hopping 
+        - Sliding (similar to hopping but contains a minimum of one event and belong to more than one sliding window ),
+        - Session
+        - Snapshot
     - Query
       SELECT MAX(c) AS mx 
       INTO [output] 
