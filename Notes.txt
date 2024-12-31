@@ -1,3 +1,9 @@
+Ref : 
+DP 900 : https://gist.github.com/j-thepac/61551f37b589bd425159c19064393987
+ETL : https://gist.github.com/j-thepac/dc7e292b16a82c4f0150091477017987
+Synapse: https://gist.github.com/j-thepac/a06be89cffb5cfd08bf63646487b186b
+Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6SbUSrKkwOL6Ks/edit?usp=drive_link
+--------------
 - Parq vs Avro
   - Parq: 
     - Column Based 
