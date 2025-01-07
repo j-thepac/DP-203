@@ -26,6 +26,7 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
       {Region}/{SubjectMatter(s)}/In/{yyyy}/{mm}/{dd}/{hh}/
       {Region}/{SubjectMatter(s)}/Out/{yyyy}/{mm}/{dd}/{hh}/
       {Region}/{SubjectMatter(s)}/Bad/{yyyy}/{mm}/{dd}/{hh}/
+    Eg:USA/Extracts/ACMEPaperCo/In/2017/08/14/updates_08142017.csv
     - TimeSeries
       /DataSet/YYYY/MM/DD/datafile_YYYY_MM_DD.tsv
   - Access 
