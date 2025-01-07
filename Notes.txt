@@ -12,79 +12,73 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
   - Avro
     - Row Based
     - Easy to Write
+-------------------
+- storage accounts
+  - https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview
+  - https://learn.microsoft.com/en-us/training/modules/secure-azure-storage-account
+  - https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-access-control
+  - Advanced Threat Protection
+    - Microsoft Defender for Cloud.
+    - Detects unusual and potentially harmful attempts to access or exploit storage accounts.
+  - Larger files lead to better performance and reduced costs.
+  - Partitioning
+    - Batch
+      {Region}/{SubjectMatter(s)}/In/{yyyy}/{mm}/{dd}/{hh}/
+      {Region}/{SubjectMatter(s)}/Out/{yyyy}/{mm}/{dd}/{hh}/
+      {Region}/{SubjectMatter(s)}/Bad/{yyyy}/{mm}/{dd}/{hh}/
+    - TimeSeries
+      /DataSet/YYYY/MM/DD/datafile_YYYY_MM_DD.tsv
+  - Access 
+      RBAC vs POSIX vs ACL(access control list ) vs SAS vs Network 
+      - Network
+        - Range of IP addr (Storage > Networking > )
 
--------------------
-- Lambda vs kappa
-  - Lambda : Raw and Streaming served by different activities in same pipeline
-  - Kappa : Both Raw and Streaming is done by same activity in same pipleien (Trigger =once , continues /processingtime))
--------------------
-- Azure HDInsight
-  - Apache Spark
-  - Apache Hive
-  - LLAP
-  - Apache Kafka
-  - Hadoop and more, in your Azure environment.
--------------------
-- Databricks 
-  - Simialr to Synapse Notebooks 
-  - SELECT /*+ SKEW('orders', 'o_custId') */ * FROM orders, customers WHERE o_custId = c_custId; --Skew Data
-  -  Types:
-    - Standard Cluster: General-purpose, suitable for various workloads.
-    - High Concurrency Cluster: Optimized for concurrent users and low-latency queries.
-    - Job Cluster: Designed for scheduled jobs, cost-effective with auto-termination.
-    - Interactive Cluster: For ad-hoc analysis and interactive workloads.
-    - Single Node Cluster: For development and testing with a single node.
-    - Autoscaling Cluster: Automatically adjusts resources based on demand.
--------------------
-- Difference Bwtween : https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/stream-processing
-  - Azure Stream Analytics
-  - HDInsight with Spark Streaming
-  - Apache Spark in Azure Databricks
-  - Apache Kafka streams API
-  - Azure Functions
-  - Azure App Service WebJobs
--------------------
-- Stream Analytics 
-  - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-solution-patterns
-  - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-parallelization
-  - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-window-functions
-  - Create Stream Analytics in Azure Portal
-    - Create input (Event Hub/IoT Hub/ gen2)
-    - Create output  (gen2 / Fx / Table / Cosmos/Event Hubs / Iothub/ SQL, PBI) - json , csv , avro
-    - Create Query (as below)
-  - Error: "was sent later than configured tolerance" - Chnage withWaterMark(“15 minutes”) 
-  - 6 SUs = 1 node
-  - parallelization = partition key
-  - Window
-    - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-window-functions
-    - Tumbling windows - aggregate all events for that same time period. 
-    - Hopping windows -A ggregate the events for a potentially different time period
-    - Sliding windows -aggregations for so many events, not at identical timelapses.
-    - Session - Extend the current window if an event occurs within the mentioned time
-    - Snapshot windows aggregate all events with the same timestamp.
-    - Query "the number of cars within a three-minute window going through a toll station that has three tollbooths":
-        ```select COUNT(*) AS Count, TollBoothId into stream_analytics 
-        from iot_event_hub Timestamp By TS_Kafka 
-        Partition By PartitionId  -- similar to window partition
-        group by tumbling_window(second,2), TollBoothId, PartitionId
-        ``` -- It has to use some timestamp for operation ie., TS_Kafka from src  
-  - Each Statement (select )= 1 SU (Streaming Unit ) and Each partition = 1 SU 
-  - Streaming : When the Backlogged Input Events metric > zero, the job is not able to process all incoming events.Increase SU (Streaming Units)
-  - Temporal Window (Time Based):
-    - Types :
-        - Tumbling 
-        - Hopping 
-        - Sliding (similar to hopping but contains a minimum of one event and belong to more than one sliding window ),
-        - Session
-        - Snapshot
-    - Query
-      SELECT MAX(c) AS mx 
-      INTO [output] 
-      FROM [input] TIMESTAMP BY EventProcessedUtcTime -- **Auto_TS_Colum
-      GROUP BY TumblingWindow(minute, 1) 
-      # HoppingWindow(second, 60, 30) , SlidingWindow(minute, 1),SessionWindow(second, 20, 60) 
- -- **GROUP BY System.Timestamp() -- **session window (groups events by identical timestamp)
-  - Streaming : When the Backlogged Input Events metric > zero, the job is not able to process all incoming events.Increase SU (Streaming Units) 
+      - RBAC (Role-Based Access Control)
+        - based on roles
+
+      - POSIX (Portable Operating System Interface)
+        - chmod -R 755 my_directory
+
+      - ACL (access control list)
+        - fine-grained access control 
+        - 421 : RWX (For Delete every directory within it, requires Read + Write + Execute )
+
+      - SAS (Shared Access Signatures)
+        - token to grantaccess attached to a URI.
+        - Storage > Security > Access keys > Primary and Secondary
+        - Types
+          - Service Level  -allow access to specific resources 
+          - Account LEvel - Service level Access + More eg: create file systems.
+
+      - Blob Storage	https://*mystorageaccount*.blob.core.windows.net/*mycontainer*/*myblob*
+        Static website (Blob Storage)	https://<storage-account>.web.core.windows.net
+        Data Lake Storage	https://<storage-account>.dfs.core.windows.net
+        Azure Files	https://<storage-account>.file.core.windows.net
+        Queue Storage	https://<storage-account>.queue.core.windows.net
+        Table Storage	https://<storage-account>.table.core.windows.net
+      - Upgrade and Movement to another region is possible 
+
+    - Gen2 
+      - Data residency affect performance
+      - Geo-replication will affect pricing
+      - https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-best-practices
+      - Data Residence : Large File less Cost and more Performance
+      
+    - Blob 
+      - (https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-best-practices#structure-data-sets 
+      -  https://learn.microsoft.com/en-us/training/modules/store-app-data-with-azure-blob-storage/3-design-organization-strategy )
+      -https://learn.microsoft.com/en-us/training/modules/secure-azure-storage-account/
+      - flat
+      - Folder Structure -  domain/subDomain/2017/q1.xls
+      - 3 types : Block (independent, upload , Download) , APpend (Stream ,Logs) , Page (random access used by VM)
+      - Reading of files is billed with a 4-MB operation
+      -  automatically encrypted by Storage Service Encryption (SSE) with a 256-bit Advanced Encryption Standard (AES) cipher
+      - Support CORS (cross-origin resource sharing ) Api
+      - Access
+        - Storage Blob Data Owner: All access 
+        - Storage Blob Data Contributor:  allows for read, write, and delete 
+        - Storage Blob Data Reader allows for read access
+        - Storage Blog Data Delegator : user delegation key ,used to sign SAS tokens.
 -------------------
 - SQL / Dedicated /  Azure Synapse Analytics database 
   - https://learn.microsoft.com/en-us/azure/architecture/best-practices/data-partitioning
@@ -177,65 +171,81 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
   - CREATE MATERIALIZED VIEW mv WITH (distribution = hash(c), FOR_APPEND) AS SELECT * FROM T  ;
     - Data with snapshot is created 
     - REFRESH MATERIALIZED VIEW employee_summary; -- Data is static and needs to be refreshed
-------------
-- storage accounts
-  - https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview
-  - https://learn.microsoft.com/en-us/training/modules/secure-azure-storage-account
-  - https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-access-control
-  - Advanced Threat Protection
-    - Microsoft Defender for Cloud.
-    - Detects unusual and potentially harmful attempts to access or exploit storage accounts.
-  - Access 
-      RBAC vs POSIX vs ACL(access control list ) vs SAS vs Network 
-      - Network
-        - Range of IP addr (Storage > Networking > )
 
-      - RBAC (Role-Based Access Control)
-        - based on roles
+-------------------
+- Stream Analytics 
+  - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-solution-patterns
+  - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-parallelization
+  - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-window-functions
+  - Create Stream Analytics in Azure Portal
+    - Create input (Event Hub/IoT Hub/ gen2)
+    - Create output  (gen2 / Fx / Table / Cosmos/Event Hubs / Iothub/ SQL, PBI) - json , csv , avro
+    - Create Query (as below)
+  - Error: "was sent later than configured tolerance" - Chnage withWaterMark(“15 minutes”) 
+  - 6 SUs = 1 node
+  - parallelization = partition key
+  - Window
+    - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-window-functions
+    - Tumbling windows - aggregate all events for that same time period. 
+    - Hopping windows -A ggregate the events for a potentially different time period
+    - Sliding windows -aggregations for so many events, not at identical timelapses.
+    - Session - Extend the current window if an event occurs within the mentioned time
+    - Snapshot windows aggregate all events with the same timestamp.
+    - Query "the number of cars within a three-minute window going through a toll station that has three tollbooths":
+        ```select COUNT(*) AS Count, TollBoothId into stream_analytics 
+        from iot_event_hub Timestamp By TS_Kafka 
+        Partition By PartitionId  -- similar to window partition
+        group by tumbling_window(second,2), TollBoothId, PartitionId
+        ``` -- It has to use some timestamp for operation ie., TS_Kafka from src  
+  - Each Statement (select )= 1 SU (Streaming Unit ) and Each partition = 1 SU 
+  - Streaming : When the Backlogged Input Events metric > zero, the job is not able to process all incoming events.Increase SU (Streaming Units)
+  - Temporal Window (Time Based):
+    - Types :
+        - Tumbling 
+        - Hopping 
+        - Sliding (similar to hopping but contains a minimum of one event and belong to more than one sliding window ),
+        - Session
+        - Snapshot
+    - Query
+      SELECT MAX(c) AS mx 
+      INTO [output] 
+      FROM [input] TIMESTAMP BY EventProcessedUtcTime -- **Auto_TS_Colum
+      GROUP BY TumblingWindow(minute, 1) 
+      # HoppingWindow(second, 60, 30) , SlidingWindow(minute, 1),SessionWindow(second, 20, 60) 
+ -- **GROUP BY System.Timestamp() -- **session window (groups events by identical timestamp)
+  - Streaming : When the Backlogged Input Events metric > zero, the job is not able to process all incoming events.Increase SU (Streaming Units) 
+-------------------
 
-      - POSIX (Portable Operating System Interface)
-        - chmod -R 755 my_directory
+- Lambda vs kappa
+  - Lambda : Raw and Streaming served by different activities in same pipeline
+  - Kappa : Both Raw and Streaming is done by same activity in same pipleien (Trigger =once , continues /processingtime))
+-------------------
+- Azure HDInsight
+  - Apache Spark
+  - Apache Hive
+  - LLAP
+  - Apache Kafka
+  - Hadoop and more, in your Azure environment.
+-------------------
+- Databricks 
+  - Simialr to Synapse Notebooks 
+  - SELECT /*+ SKEW('orders', 'o_custId') */ * FROM orders, customers WHERE o_custId = c_custId; --Skew Data
+  -  Types:
+    - Standard Cluster: General-purpose, suitable for various workloads.
+    - High Concurrency Cluster: Optimized for concurrent users and low-latency queries.
+    - Job Cluster: Designed for scheduled jobs, cost-effective with auto-termination.
+    - Interactive Cluster: For ad-hoc analysis and interactive workloads.
+    - Single Node Cluster: For development and testing with a single node.
+    - Autoscaling Cluster: Automatically adjusts resources based on demand.
+-------------------
+- Difference Bwtween : https://learn.microsoft.com/en-us/azure/architecture/data-guide/technology-choices/stream-processing
+  - Azure Stream Analytics
+  - HDInsight with Spark Streaming
+  - Apache Spark in Azure Databricks
+  - Apache Kafka streams API
+  - Azure Functions
+  - Azure App Service WebJobs
 
-      - ACL (access control list)
-        - fine-grained access control 
-        - 421 : RWX (For Delete every directory within it, requires Read + Write + Execute )
-
-      - SAS (Shared Access Signatures)
-        - token to grantaccess attached to a URI.
-        - Storage > Security > Access keys > Primary and Secondary
-        - Types
-          - Service Level  -allow access to specific resources 
-          - Account LEvel - Service level Access + More eg: create file systems.
-
-      - Blob Storage	https://*mystorageaccount*.blob.core.windows.net/*mycontainer*/*myblob*
-        Static website (Blob Storage)	https://<storage-account>.web.core.windows.net
-        Data Lake Storage	https://<storage-account>.dfs.core.windows.net
-        Azure Files	https://<storage-account>.file.core.windows.net
-        Queue Storage	https://<storage-account>.queue.core.windows.net
-        Table Storage	https://<storage-account>.table.core.windows.net
-      - Upgrade and Movement to another region is possible 
-
-    - Gen2 
-      - Data residency affect performance
-      - Geo-replication will affect pricing
-      - https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-best-practices
-      - Data Residence : Large File less Cost and more Performance
-      
-    - Blob 
-      - (https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-best-practices#structure-data-sets 
-      -  https://learn.microsoft.com/en-us/training/modules/store-app-data-with-azure-blob-storage/3-design-organization-strategy )
-      -https://learn.microsoft.com/en-us/training/modules/secure-azure-storage-account/
-      - flat
-      - Folder Structure -  domain/subDomain/2017/q1.xls
-      - 3 types : Block (independent, upload , Download) , APpend (Stream ,Logs) , Page (random access used by VM)
-      - Reading of files is billed with a 4-MB operation
-      -  automatically encrypted by Storage Service Encryption (SSE) with a 256-bit Advanced Encryption Standard (AES) cipher
-      - Support CORS (cross-origin resource sharing ) Api
-      - Access
-        - Storage Blob Data Owner: All access 
-        - Storage Blob Data Contributor:  allows for read, write, and delete 
-        - Storage Blob Data Reader allows for read access
-        - Storage Blog Data Delegator : user delegation key ,used to sign SAS tokens.
 -------------------
 - ADF:
   - https://learn.microsoft.com/en-us/azure/data-factory/monitor-configure-diagnostics  
