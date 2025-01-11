@@ -83,7 +83,7 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
         - Storage Blob Data Reader allows for read access
         - Storage Blog Data Delegator : user delegation key ,used to sign SAS tokens.
 -------------------
-- SQL / Dedicated /  Azure Synapse Analytics database 
+- Dedicated /  Azure Synapse Analytics database 
   - https://learn.microsoft.com/en-us/azure/architecture/best-practices/data-partitioning
   - https://learn.microsoft.com/en-us/training/modules/choose-storage-approach-in-azure/
   - https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/massively-parallel-processing-mpp-architecture 
@@ -174,27 +174,55 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
   - CREATE MATERIALIZED VIEW mv WITH (distribution = hash(c), FOR_APPEND) AS SELECT * FROM T  ;
     - Data with snapshot is created 
     - REFRESH MATERIALIZED VIEW employee_summary; -- Data is static and needs to be refreshed
+--------------------
+- Synapse :
+  - https://learn.microsoft.com/en-us/training/modules/secure-data-warehouse-azure-synapse-analytics/2-understand-network-security-options
+  - Lookup : Denormalize
+  - security options
+    - Firewall rules : Type of IP that is allowed  Eg : Synapse > Security > Firewall > Add IPS
+    - Virtual networks (VPN) : 
+      - to securely communicate with Other Networks 
+      - Managed workspace Virtual Network : 
+        - managed By Synapse (spark Cluster , Dedicated, Serverless  )
+        - Check box while creating Synapse 
+    - Private endpoints:to connect up its various components through private IP address
+    - Cosmos + Spark + LinkedService
+      df = spark.read #write
+          .format(""cosmos.olap"")\
+          .option(""spark.synapse.linkedService"", ""my_linked_service"")\
+          .option(""spark.cosmos.container"", ""my-container"")\
+          .load()
+        %%sql
+        CREATE TABLE products using cosmos.olap options (
+          spark.synapse.linkedService 'my_linked_service',
+          spark.cosmos.container 'my-container'
+        ); -- **SELECT productID, productName FROM products;"
+    - Serverless + Cosmos + LS
+      	SELECT * FROM OPENROWSET('CosmosDB',
+        'Account=my-cosmos-db;Database=my-db;Key=abcd1234....==',
+        [my-container]) as T
+  - saveAsTable vs saveAsTempTable
 -------
 ## HTAP (Hybrid Transactional and Analytical Processing Patterns)
-- Data Sync bw Src (SQL server , Azure SQL )and Target -Dataverse(Datalakes) ,Dedicated and Cosmos targets
--  Src > Synapse > Target (Synapse as Compute Engine)
-- Cosmos DB (No SQL) 
-	- Select Type of Cosmos DB (SQL ,Mongo etc., ) while setting up
-	- Fast Read and Write
-	- Auto Scales
-	- Uses API
-	- Expensive
-	- To Enable HTAP (On Demand - video8): 
-		- Cosmose Homepage : To turn on Analytical Contianer in Cosmos
-		- In Synapse: Homepage > Integration > Enable Synapse link
-	- Synapse read cosmos: Select * from openrowset() with()as T CROSS APPLY OPENJSON(C) with()
-	
-- SQL server
-	-  Use managed Identnity
-	-  Azure Synapse Link enabled 
-	-  Add ips to Firewall 
-	-  Create linked Service + Linked CONNECTION in Synapse(Piplnes > "+")
-	-  Consfiure Blob Storage for intermiitend result
+	- Data Sync bw Src (SQL server , Azure SQL )and Target -Dataverse(Datalakes) ,Dedicated and Cosmos targets
+	-  Src > Synapse > Target (Synapse as Compute Engine)
+	- Cosmos DB (No SQL) 
+		- Select Type of Cosmos DB (SQL ,Mongo etc., ) while setting up
+		- Fast Read and Write
+		- Auto Scales
+		- Uses API
+		- Expensive
+		- To Enable HTAP (On Demand - video8): 
+			- Cosmose Homepage : To turn on Analytical Contianer in Cosmos
+			- In Synapse: Homepage > Integration > Enable Synapse link
+		- Synapse read cosmos: Select * from openrowset() with()as T CROSS APPLY OPENJSON(C) with()
+		
+	- SQL server
+		-  Use managed Identnity
+		-  Azure Synapse Link enabled 
+		-  Add ips to Firewall 
+		-  Create linked Service + Linked CONNECTION in Synapse(Piplnes > "+")
+		-  Consfiure Blob Storage for intermiitend result
 -------------------
 - Stream Analytics (OnDemand - video 9)
   - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-solution-patterns
@@ -238,18 +266,26 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
 
   - Streaming : When the Backlogged Input Events metric > zero, the job is not able to process all incoming events.Increase SU (Streaming Units) 
 -------------------
-MS PurView
-- Governance
-- Avoid Data Duplication 
-- Consists of Data Owner (Policy Creators), Stewards(enforce policy) , publishers , Consumers(Data Engineers)  
-- Store Information on type of Data which exists , Record Chnages of Data LandScape in a Company
-- Can have info on Storage Sources , Resources ,Data etc., 
-- Register Data
+- Microsoft Purview (LeanIX ) 
+	- https://learn.microsoft.com/en-us/purview/concept-data-lineage
+	- https://learn.microsoft.com/en-us/purview/unified-catalog-search
+	- Catalog and Governance and Audit
+	- data lineage
+	- Governance
+	- Avoid Data Duplication 
+	- Consists of Data Owner (Policy Creators), Stewards(enforce policy) , publishers , Consumers(Data Engineers)  
+	- Store Information on type of Data which exists , Record Chnages of Data LandScape in a Company
+	- Can have info on Storage Sources , Resources ,Data etc., 
+	- Register Data
 	- Pre-Req: Managed Identity
 	- Open Purview GUI
 	- Data Map Tap> Register button> Select Source Type > Give Name and fill details (Make sure the resource is linked to Managed Identity)
 	- Open the Saved Map > click Scan
-- Synapse has inbuilt Purview Interface : Manage > Microsoft Purview . ( Everything done with managed identity is trackedfor synapse)
+	- Synapse has inbuilt Purview Interface : Manage > Microsoft Purview . ( Everything done with managed identity is trackedfor synapse)
+	
+	- Create PurView > Add DataSource > Scan using Managed Identity > Analyse Result using PBI or Builtin
+	- master key in the Azure SQL database for lineage to work.
+	- Microsoft Purview governance portal : view and search Metadata
 ------------
 - Lambda vs kappa
   - Lambda : Raw and Streaming served by different activities in same pipeline
@@ -264,6 +300,14 @@ MS PurView
 -------------------
 - Databricks 
   - Simialr to Synapse Notebooks 
+  - DBFS (Databricks File System) ,Similar to Synape SQL Database in Gen2 . User can query this like in Synapse
+  - File extension .dfs
+  - Uses Delta Lake Architecture
+  - Spark Clusters
+  - Main Difference 
+	-  Only Apache Spark
+	-  Magic Commands single "%"
+        -  No Dataflows
   - SELECT /*+ SKEW('orders', 'o_custId') */ * FROM orders, customers WHERE o_custId = c_custId; --Skew Data
   -  Types:
     - Standard Cluster: General-purpose, suitable for various workloads.
@@ -287,15 +331,6 @@ MS PurView
   - https://learn.microsoft.com/en-us/azure/data-factory/pipeline-trigger-troubleshoot-guide
   -  Settings > Diagnostci Setting > Send to Log Analytics>Various logs relevant to your workloads to send to Log Analytics tables. 
 -------------------
-- Microsoft Purview (LeanIX ) 
-  - https://learn.microsoft.com/en-us/purview/concept-data-lineage
-  - https://learn.microsoft.com/en-us/purview/unified-catalog-search
-  - Catalog and Governance and Audit
-  - data lineage
-  - Create PurView > Add DataSource > Scan using Managed Identity > Analyse Result using PBI or Builtin
-  - master key in the Azure SQL database for lineage to work.
-  - Microsoft Purview governance portal : view and search Metadata
--------------------
 - Hive :
   - https://learn.microsoft.com/en-us/azure/data-factory/tutorial-transform-data-hive-virtual-network
   - HDInsight cluster URL :  https://<clustername>.azurehdinsight.net.
@@ -304,33 +339,7 @@ MS PurView
     INSERT OVERWRITE TABLE T
     Select id FROM T2
 -------------------
-- Synapse :
-  - https://learn.microsoft.com/en-us/training/modules/secure-data-warehouse-azure-synapse-analytics/2-understand-network-security-options
-  - Lookup : Denormalize
-  - security options
-    - Firewall rules : Type of IP that is allowed  Eg : Synapse > Security > Firewall > Add IPS
-    - Virtual networks (VPN) : 
-      - to securely communicate with Other Networks 
-      - Managed workspace Virtual Network : 
-        - managed By Synapse (spark Cluster , Dedicated, Serverless  )
-        - Check box while creating Synapse 
-    - Private endpoints:to connect up its various components through private IP address
-    - Cosmos + Spark + LinkedService
-      df = spark.read #write
-          .format(""cosmos.olap"")\
-          .option(""spark.synapse.linkedService"", ""my_linked_service"")\
-          .option(""spark.cosmos.container"", ""my-container"")\
-          .load()
-        %%sql
-        CREATE TABLE products using cosmos.olap options (
-          spark.synapse.linkedService 'my_linked_service',
-          spark.cosmos.container 'my-container'
-        ); -- **SELECT productID, productName FROM products;"
-    - Serverless + Cosmos + LS
-      	SELECT * FROM OPENROWSET('CosmosDB',
-        'Account=my-cosmos-db;Database=my-db;Key=abcd1234....==',
-        [my-container]) as T
-  - saveAsTable vs saveAsTempTable
+
 ---------------
 ## Glossary
 ### General
