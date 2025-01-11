@@ -203,11 +203,11 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
   - Create Stream Analytics in Azure Portal
     - Stream Analyics > HomePage (No Seperate GUI)
     - Create input (Event Hub/IoT Hub/ Blob /kafka)
-    - Create output  (All types supported) - json , csv , avro
-    - Create Query ("
-      select count(*),DateAdd(minute,-1,System.Timestamp()) ,System.Timestamp()
-      from src 
-      group by window(minute,1)
+    - Create Query - 
+		      select count(*),DateAdd(minute,-1,System.Timestamp()) ,System.Timestamp()
+		      from src 
+		      group by window(minute,1)
+    - Create output  (All types supported) 
     - Monitor 
   - Error: "was sent later than configured tolerance" - Chnage withWaterMark(“15 minutes”) 
   - 6 SUs = 1 node
