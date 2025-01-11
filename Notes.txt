@@ -203,44 +203,39 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
   - Create Stream Analytics in Azure Portal
     - Stream Analyics > HomePage (No Seperate GUI)
     - Create input (Event Hub/IoT Hub/ Blob /kafka)
-    - Create Query - 
-		      select count(*),DateAdd(minute,-1,System.Timestamp()) ,System.Timestamp()
-		      from src 
-		      group by window(minute,1)
+    - Create Query 
     - Create output  (All types supported) 
     - Monitor 
   - Error: "was sent later than configured tolerance" - Chnage withWaterMark(“15 minutes”) 
   - 6 SUs = 1 node
   - parallelization = partition key
-  - Window
-    - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-window-functions
-    - Tumbling windows - aggregate all events for that same time period. 
-    - Hopping windows -A ggregate the events for a potentially different time period
-    - Sliding windows -aggregations for so many events, not at identical timelapses.
-    - Session - Extend the current window if an event occurs within the mentioned time
-    - Snapshot windows aggregate all events with the same timestamp.
-    - Query "the number of cars within a three-minute window going through a toll station that has three tollbooths":
-        ```select COUNT(*) AS Count, TollBoothId into stream_analytics 
-        from iot_event_hub Timestamp By TS_Kafka 
-        Partition By PartitionId  -- similar to window partition
-        group by tumbling_window(second,2), TollBoothId, PartitionId
-        ``` -- It has to use some timestamp for operation ie., TS_Kafka from src  
   - Each Statement (select )= 1 SU (Streaming Unit ) and Each partition = 1 SU 
   - Streaming : When the Backlogged Input Events metric > zero, the job is not able to process all incoming events.Increase SU (Streaming Units)
   - Temporal Window (Time Based):
+    - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-window-functions
     - Types :
-        - Tumbling 
-        - Hopping 
-        - Sliding (similar to hopping but contains a minimum of one event and belong to more than one sliding window ),
-        - Session
-        - Snapshot
-    - Query
-      SELECT MAX(c) AS mx 
-      INTO [output] 
-      FROM [input] TIMESTAMP BY EventProcessedUtcTime -- **Auto_TS_Colum
-      GROUP BY TumblingWindow(minute, 1) 
-      # HoppingWindow(second, 60, 30) , SlidingWindow(minute, 1),SessionWindow(second, 20, 60) 
- -- **GROUP BY System.Timestamp() -- **session window (groups events by identical timestamp)
+        - Tumbling : Aggregate all events for that same time interval. 
+			-- The number of cars within a three-minute window going through a toll station that has three tollbooths":
+		        SELECT COUNT(*) AS Count, TollBoothId into stream_analytics 
+			INTO [output] 
+		        FROM iot_event_hub 
+			TIMESTAMP By TS_Kafka  -- 
+		        PARTITION BY PartitionId  --  (similar to window partition)
+		        GROUP BY  tumbling_window(second,2), TollBoothId, PartitionId
+		        ``
+        - Hopping : Tumbling + Overlapping for standard time with previous Window
+		GROUP BY HoppingWindow(second, 60, 30)
+        - Sliding : Window is created by an event and window exists for set time 
+		GROUP BY slidingwindow(minute,1)
+        - Session : 
+		Window Cannot Overlap 
+		Stops when stream stops and Resume if stream resumes 
+		Window can have 1 or more event bit not reverse 
+		Avoid Nulls by capturing Empty Windw 
+		GROUP BY SessionWindow(second, 20, 60) 
+        - Snapshot : Select count(*) into T from T1 group by system.timestamp()
+		GROUP BY kafka_TS
+
   - Streaming : When the Backlogged Input Events metric > zero, the job is not able to process all incoming events.Increase SU (Streaming Units) 
 -------------------
 
