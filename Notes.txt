@@ -241,7 +241,8 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
 MS PurView
 - Governance
 - Avoid Data Duplication 
-- Consists of Data Owner (Policy Creators), Stewards(enforce policy) , publishers , Consumers(Data Engineers)   
+- Consists of Data Owner (Policy Creators), Stewards(enforce policy) , publishers , Consumers(Data Engineers)  
+- Store Information on type of Data which exists , Record Chnages of Data LandScape in a Company
 ------------
 - Lambda vs kappa
   - Lambda : Raw and Streaming served by different activities in same pipeline
