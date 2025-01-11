@@ -243,6 +243,13 @@ MS PurView
 - Avoid Data Duplication 
 - Consists of Data Owner (Policy Creators), Stewards(enforce policy) , publishers , Consumers(Data Engineers)  
 - Store Information on type of Data which exists , Record Chnages of Data LandScape in a Company
+- Can have info on Storage Sources , Resources ,Data etc., 
+- Register Data
+	- Pre-Req: Managed Identity
+	- Open Purview GUI
+	- Data Map Tap> Register button> Select Source Type > Give Name and fill details (Make sure the resource is linked to Managed Identity)
+	- Open the Saved Map > click Scan
+- Synapse has inbuilt Purview Interface : Manage > Microsoft Purview . ( Everything done with managed identity is trackedfor synapse)
 ------------
 - Lambda vs kappa
   - Lambda : Raw and Streaming served by different activities in same pipeline
@@ -273,7 +280,6 @@ MS PurView
   - Apache Kafka streams API
   - Azure Functions
   - Azure App Service WebJobs
-
 -------------------
 - ADF:
   - https://learn.microsoft.com/en-us/azure/data-factory/monitor-configure-diagnostics  
