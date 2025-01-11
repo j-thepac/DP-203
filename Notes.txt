@@ -238,7 +238,11 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
 
   - Streaming : When the Backlogged Input Events metric > zero, the job is not able to process all incoming events.Increase SU (Streaming Units) 
 -------------------
-
+MS PurView
+- Governance
+- Avoid Data Duplication 
+- Consists of Data Owner (Policy Creators), Stewards(enforce policy) , publishers , Consumers(Data Engineers)   
+------------
 - Lambda vs kappa
   - Lambda : Raw and Streaming served by different activities in same pipeline
   - Kappa : Both Raw and Streaming is done by same activity in same pipleien (Trigger =once , continues /processingtime))
