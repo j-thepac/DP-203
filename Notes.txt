@@ -103,7 +103,7 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
 		SELECT * FROM 
 			OPENROWSET(BULK 'https://<>.blob.core.windows.net/data/orders/year=*/month=*/*.*',FORMAT = 'parquet') AS orders
 
-      - CETAS
+      - CETAS ( Cannot alter External Table)
 	        CREATE EXTERNAL FILE FORMAT [ParquetFF] WITH (
 	            FORMAT_TYPE = PARQUET,
 	            DATA_COMPRESSION = 'org.apache.hadoop.io.compress.SnappyCodec'
