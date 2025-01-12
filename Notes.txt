@@ -152,6 +152,7 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
         - Logic based 
 
   - Cluster vs CLuster ColumnStore
+  -  60 Million = minimum  number of rows for clustered columnstore indexes  
   - Distribution
     - Hash = querying Easier
     - Round robin =loading data is simple
