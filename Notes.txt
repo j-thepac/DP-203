@@ -17,14 +17,21 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
   - https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview
   - https://learn.microsoft.com/en-us/training/modules/secure-azure-storage-account
   - https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-access-control
-  - Advanced Threat Protection
-    - Microsoft Defender for Cloud.
-    - Detects unusual and potentially harmful attempts to access or exploit storage accounts.
-  - Larger files lead to better performance and reduced costs.
-  - Supports 
+
+  - Each storage account located in different geographies 
+  - Container = Logical Seperation
+
+  Features:
+	- Types = Blob , gen2	
+	- Also called as OnDemand , Datalake
+	- Not a relationla Data Store
+	- Able to Query using Serverless
+	- Used for unplanned or "bursty" workloads , Data exploration , Data transformation , Data Warehouse
+	- Larger files lead to better performance and reduced costs.
 	- locally redundant storage (LRS),/ Geo-redundant storage (GRS) option
  	- Hadoop Distributed File System (HDFS) 
 	- Access control lists (ACLs) and Portable Operating System Interface (POSIX) 
+  	- Advanced Threat Protection using Microsoft Defender for Cloud (Detects unusual and potentially harmful attempts to access or exploit storage accounts)
 	
   - Partitioning
     - Batch
@@ -36,8 +43,7 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
       /DataSet/YYYY/MM/DD/datafile_YYYY_MM_DD.tsv
   - Medaillion Architecture : Bronze (Raw) , Silver (EZ), Gold (CZ)
   - Lake house = Medallion + Delta Lake  + ADSL 
-  - Each storage account located in different geographies 
-  - Container = Logical Seperation
+
   - Access 
       RBAC vs POSIX vs ACL(access control list ) vs SAS vs Network 
       - Network
@@ -90,7 +96,6 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
       - Geo-replication will affect pricing
       - https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-best-practices
       - Data Residence : Large File less Cost and more Performance
-      
 
 -------------------
 - Dedicated /  Azure Synapse Analytics database 
