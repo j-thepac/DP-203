@@ -248,8 +248,12 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
   - A logic app can be triggered by an email, and then run a pipeline.
 -------
 ## HTAP (Hybrid Transactional and Analytical Processing Patterns)
-	- Data Sync bw Src (SQL server , Azure SQL )and Target -Dataverse(Datalakes) ,Dedicated and Cosmos targets
-	-  Src > Synapse > Target (Synapse as Compute Engine)
+	- Data Sync bw Src and Target
+		src : SQL server , Azure SQL 
+		Target: Dataverse(Datalakes) ,Dedicated and Cosmos targets
+	-  Flow: Src > Synapse > Target (Synapse as Compute Engine)
+	- When data type is changed - new column is created 	
+	- When 
 	- Cosmos DB (No SQL) 
 		- Select Type of Cosmos DB (SQL ,Mongo etc., ) while setting up
 		- Fast Read and Write
