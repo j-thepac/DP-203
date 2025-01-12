@@ -150,7 +150,6 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
   - BucketBy vs partitionBy 
     - Bucket Same values in 1 Bucket
     - df.write.partitionBy("year").bucketBy(2, "id").mode("overwrite").saveAsTable("bucketed_table")
-
   - Partitioning
     - https://learn.microsoft.com/en-us/azure/architecture/best-practices/data-partitioning#designing-partitions
     - horizontal partitioning, you can improve the performance of the data load
@@ -173,7 +172,12 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
 
     - Functional Paritioning
         - Logic based 
-
+  - Partition switching can be used to quickly remove or replace a section of a table
+	- CREATE TABLE dbo.FactInternetSales_20000101 WITH    (  same as mail table )
+	- ALTER TABLE FactInternetSales SWITCH PARTITION 2 
+		TO 
+		FactInternetSales_20000101 PARTITION 2;
+	
   - Cluster vs CLuster ColumnStore vs heap(no Index)
   -  60 Million = minimum  number of rows for clustered columnstore indexes  
   - Distribution
@@ -202,9 +206,12 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
       
   - CREATE MATERIALIZED VIEW mv WITH (distribution = hash(c), FOR_APPEND) AS SELECT * FROM T  ;
     - Data with snapshot is created 
+    - If query result is saved , data can be queird faster
     - REFRESH MATERIALIZED VIEW employee_summary; -- Data is static and needs to be refreshed
+
   - Masking
 	- SQL home page > Dynamic Data Masking blade > Add MASk tab
+	
   - transparent data encryption (TDE)
 	- TDE encrypts the entire database storage using a symmetric key called a Database Encryption Key (DEK)
 	- encryption algorithm AES256.
