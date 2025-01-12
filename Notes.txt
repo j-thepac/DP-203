@@ -78,11 +78,15 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
         - Storage Blog Data Delegator : user delegation key ,used to sign SAS tokens.
 
     - Gen2 
-      - Blob + Hierarchical Namespace option to Enabled
-      - Data residency affect performance
-      - Geo-replication will affect pricing
-      - https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-best-practices
-      - Data Residence : Large File less Cost and more Performance
+	- Blob + Hierarchical Namespace option to Enabled
+	- Data residency affect performance
+	- Geo-replication will affect pricing
+	- https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-best-practices
+	- Data Residence : Large File less Cost and more Performance
+	- BucketBy vs partitionBy 
+		- Partitions =parallel processing,  buckets = optimize join operations. 
+		- BucketBy - Fixed groups of data based on a hash of specified columns
+		- df.write.partitionBy("year").bucketBy(2, "id").mode("overwrite").saveAsTable("bucketed_table")
 
     - Query:
       - CSV
@@ -120,6 +124,22 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
 - Dedicated /  Azure Synapse Analytics database / SQL Pool
 	
   - Scale :Scale out = better performance, or scale back compute to save costs.
+  - DW ( Node =computer , Data is divided into parition in each node for multithreading) 
+	 - Node1 (Distribution1 = Partition1 ,Parition2...) 
+	 - Node2  (Distribution2 = Partition1 , Partition2...) .... 
+	 - 
+	 - Node 60 (....
+  - Monitor Performance
+	OPTION :SELECT * FROM a , b where a.id = b.id
+		OPTION (Label = 'CustJoin', HASH JOIN) #Instruct to Use Hash join  
+	sys.dm_exec_sessions : all active user connections 
+	sys.dm_pdw_exec_requests: all requests that are currently
+	sys.dm_pdw_request_steps: about each step of a SQL request
+	sys.dm_pdw_sql_requests: SQL requests that have been submitted
+	sys.dm_pdw_dms_workers: the workers responsible for data movement
+	sys.dm_pdw_waits:amount of time that requests have spent waiting for resources.
+	DBCC PDW_SHOWEXECUTIONPLAN: Query Plan and the estimated costs
+
   - Distribution(use:parallel , col =Skey,naturalKey), Index(Searching) , Partition (inside distribution , col=Range Col )
   - Sys Objects
     - SELECT name FROM sys.objects WHERE type = 'V' AND name LIKE 'dm_pdw%';
@@ -139,10 +159,7 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
 
     - INSERT INTO dbo.T Select * from dbo.T2
 
-  - BucketBy vs partitionBy 
-    - Partitions =parallel processing,  buckets = optimize join operations. 
-    - Fixed groups of data based on a hash of specified columns
-    - df.write.partitionBy("year").bucketBy(2, "id").mode("overwrite").saveAsTable("bucketed_table")
+
 
   - Partitioning (stored within a distribution ,  )
     - Use a range column ( Timestamp )
