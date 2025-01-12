@@ -31,6 +31,8 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
       /DataSet/YYYY/MM/DD/datafile_YYYY_MM_DD.tsv
   - Medaillion Architecture : Bronze (Raw) , Silver (EZ), Gold (CZ)
   - Lake house = Medallion + Delta Lake  + ADSL 
+  - Each storage account located in different geographies 
+  - Container = Logical Seperation
   - Access 
       RBAC vs POSIX vs ACL(access control list ) vs SAS vs Network 
       - Network
@@ -125,8 +127,11 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
   - BucketBy vs partitionBy 
     - Bucket Same values in 1 Bucket
     - df.write.partitionBy("year").bucketBy(2, "id").mode("overwrite").saveAsTable("bucketed_table")
+
   - Partitioning
     - https://learn.microsoft.com/en-us/azure/architecture/best-practices/data-partitioning#designing-partitions
+    - horizontal partitioning, you can improve the performance of the data load
+    -  vertical partitioning, different parts of the database can be isolated from each other to improve cache use.
     - Sharding  
         - horizontal partitions (each record into different Partition) 
         - Same Schema
@@ -202,6 +207,7 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
         'Account=my-cosmos-db;Database=my-db;Key=abcd1234....==',
         [my-container]) as T
   - saveAsTable vs saveAsTempTable
+  - A logic app can be triggered by an email, and then run a pipeline.
 -------
 ## HTAP (Hybrid Transactional and Analytical Processing Patterns)
 	- Data Sync bw Src (SQL server , Azure SQL )and Target -Dataverse(Datalakes) ,Dedicated and Cosmos targets
@@ -270,8 +276,8 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
 	- https://learn.microsoft.com/en-us/purview/concept-data-lineage
 	- https://learn.microsoft.com/en-us/purview/unified-catalog-search
 	- Catalog and Governance and Audit
-	- data lineage
-	- Governance
+	- data lineage (master key in the Azure SQL database for lineage to work.)
+	- Governance (Microsoft Purview governance portal)
 	- Avoid Data Duplication 
 	- Consists of Data Owner (Policy Creators), Stewards(enforce policy) , publishers , Consumers(Data Engineers)  
 	- Store Information on type of Data which exists , Record Chnages of Data LandScape in a Company
