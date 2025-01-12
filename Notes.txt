@@ -174,7 +174,7 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
     - Functional Paritioning
         - Logic based 
 
-  - Cluster vs CLuster ColumnStore
+  - Cluster vs CLuster ColumnStore vs heap(no Index)
   -  60 Million = minimum  number of rows for clustered columnstore indexes  
   - Distribution
     - Hash = querying Easier
@@ -252,6 +252,7 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
 		src : SQL server , Azure SQL 
 		Target: Dataverse(Datalakes) ,Dedicated and Cosmos targets
 	-  Flow: Src > Synapse > Target (Synapse as Compute Engine)
+	- not supported for Azure SQL Managed Instance.
 	- Cosmos DB (No SQL) 
 		- Select Type of Cosmos DB (SQL ,Mongo etc., ) while setting up
 		- Fast Read and Write
@@ -266,12 +267,15 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
 		- Process :
 			- Navigation Cosmos homepage > Synapse link blade > Enable
 			- Open Synapse > Create linked Service for Cosmos
-	- SQL server
-		-  Use managed Identnity
+	- Azure SQL Database (Paas)
+		- Target = dedicated SQL pool
+		-  Use managed Identity
+		- data types not supported ,Binary, nVarchar, varchar(Max)
+		-  change feed feature in Azure SQL Database ie., data modification in memory and forwards to Synapse .
 		-  Azure Synapse Link enabled 
 		-  Add ips to Firewall 
-		-  Create linked Service + Linked CONNECTION in Synapse(Piplnes > "+")
-		-  Consfiure Blob Storage for intermiitend result
+		-  Create linked Service + Linked CONNECTION in Synapse(Piplnes > "+") ,then configure the mappings between the source and target tables.
+		-  Configure Blob Storage for intermiitend result
 -------------------
 - Stream Analytics (OnDemand - video 9)
   - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-solution-patterns
