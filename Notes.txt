@@ -13,7 +13,7 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
     - Row Based
     - Easy to Write
 -------------------
-- storage accounts
+- storage accounts \ PolyBase
   - https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview
   - https://learn.microsoft.com/en-us/training/modules/secure-azure-storage-account
   - https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-access-control
