@@ -20,10 +20,10 @@
     - CETAS - with(target ) as select * from Source
     - create Pipelines + CETAS + SPROC , 
   ####  3. Create a lake database in Azure Synapse Analytics
+   #### 4. Secure data and manage users in Azure Synapse serverless SQL pools"
     - Authentication: Anon (no auth ), SAS ( token) , Managed Identity (One rsrc gives authentication to other ), user Identity - (MFA)
     - Access control model = RBAC (assign roles to users, groups, or service principals.), ACL ( granular files , Foldrs )
     - Permission in DB
-   #### 4. Secure data and manage users in Azure Synapse serverless SQL pools"
 
 ## 3. Perform data engineering with Azure Synapse Apache Spark Pools
   #### Analyze data with Apache Spark in Azure Synapse Analytics
