@@ -44,28 +44,20 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
   - Medaillion Architecture : Bronze (Raw) , Silver (EZ), Gold (CZ)
   - Lake house = Medallion + Delta Lake  + ADSL 
 
-  - Access 
-      RBAC vs POSIX vs ACL(access control list ) vs SAS vs Network 
-      - Network
-        - Range of IP addr (Storage > Networking > )
-
-      - RBAC (Role-Based Access Control)
-        - based on roles
-
-      - POSIX (Portable Operating System Interface)
-        - chmod -R 755 my_directory
-
-      - ACL (access control list)
-        - fine-grained access control 
-        - 421 : RWX (For Delete every directory within it, requires Read + Write + Execute )
-
+  - Access : 
+      - Service Principle : Functional ID created in Azure Active Directory
+      - Managed Identity : Functional ID managed by Azure 
+      - Firewall (Network) : Range of IP addr (Storage > Networking > )
+      - RBAC (Role-Based Access Control)based on roles
+      - POSIX (Portable Operating System Interface) ie., chmod -R 755 my_directory
+      - ACL (access control list): fine-grained access control at folder level
       - SAS (Shared Access Signatures)
         - token to grantaccess attached to a URI.
         - Storage > Security > Access keys > Primary and Secondary
         - Types
           - Service Level  -allow access to specific resources 
           - Account LEvel - Service level Access + More eg: create file systems.
-
+  - Endpoints for different Storages : 
       - Blob Storage	https://*mystorageaccount*.blob.core.windows.net/*mycontainer*/*myblob*
         Static website (Blob Storage)	https://<storage-account>.web.core.windows.net
         Data Lake Storage	https://<storage-account>.dfs.core.windows.net
