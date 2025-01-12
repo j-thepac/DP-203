@@ -14,24 +14,18 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
     - Easy to Write
 -------------------
 - storage accounts \ PolyBase
-  - https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview
-  - https://learn.microsoft.com/en-us/training/modules/secure-azure-storage-account
-  - https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-access-control
-
   - Each storage account located in different geographies 
   - Container = Logical Seperation
-
-  Features:
-	- Types = Blob , gen2	
-	- Also called as OnDemand , Datalake
-	- Not a relationla Data Store
-	- Able to Query using Serverless
-	- Used for unplanned or "bursty" workloads , Data exploration , Data transformation , Data Warehouse
-	- Larger files lead to better performance and reduced costs.
-	- locally redundant storage (LRS),/ Geo-redundant storage (GRS) option
- 	- Hadoop Distributed File System (HDFS) 
-	- Access control lists (ACLs) and Portable Operating System Interface (POSIX) 
-  	- Advanced Threat Protection using Microsoft Defender for Cloud (Detects unusual and potentially harmful attempts to access or exploit storage accounts)
+  - Types = Blob , gen2	
+  - Also called as OnDemand , Datalake
+  - Not a relationla Data Store
+  - Able to Query using Serverless
+  - Used for unplanned or "bursty" workloads , Data exploration , Data transformation , Data Warehouse
+  - Larger files lead to better performance and reduced costs.
+  - locally redundant storage (LRS),/ Geo-redundant storage (GRS) option
+  - Hadoop Distributed File System (HDFS) 
+  - Access control lists (ACLs) and Portable Operating System Interface (POSIX) 
+  - Advanced Threat Protection using Microsoft Defender for Cloud (Detects unusual and potentially harmful attempts to access or exploit storage accounts)
 	
   - Partitioning
     - Batch
@@ -57,6 +51,7 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
         - Types
           - Service Level  -allow access to specific resources 
           - Account LEvel - Service level Access + More eg: create file systems.
+
   - Endpoints for different Storages : 
       - Blob Storage	https://*mystorageaccount*.blob.core.windows.net/*mycontainer*/*myblob*
         Static website (Blob Storage)	https://<storage-account>.web.core.windows.net
@@ -89,7 +84,7 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
       - https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-best-practices
       - Data Residence : Large File less Cost and more Performance
 
-      Query:
+    - Query:
       - CSV
 		SELECT * FROM OPENROWSET
 			(BULK 'https://<>.blob.core.windows.net/*.csv',FORMAT = 'csv',PARSER_VERSION = '2.0',HEADER_ROW = TRUE) AS rows
@@ -123,18 +118,15 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
 
 -------------------
 - Dedicated /  Azure Synapse Analytics database / SQL Pool
-  - https://learn.microsoft.com/en-us/azure/architecture/best-practices/data-partitioning
-  - https://learn.microsoft.com/en-us/training/modules/choose-storage-approach-in-azure/
-  - https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/massively-parallel-processing-mpp-architecture 
-  - https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/quickstart-scale-compute-tsql#check-dedicated-sql-pool-formerly-sql-dw-state
-  - https://learn.microsoft.com/en-us/training/modules/load-optimize-data-into-relational-data-warehouse/
-  - https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-manage-monitor#monitor-waiting-queries
+
   - Scale
 	- DW500c = 500/50 =10 Nodes 
 	Scale out = better performance, or scale back compute to save costs.
+
   - Sys Objects
     - SELECT name FROM sys.objects WHERE type = 'V' AND name LIKE 'dm_pdw%';
     - EXEC sp_help 'sys.objects';
+
   - Queries
     - COPY INTO [dbo].[T] FROM 'https://BlobStorage.blob.core.windows.net/Folder'
       WITH ( FILE_TYPE = 'CSV',
@@ -145,12 +137,14 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
         ( DISTRIBUTION = REPLICATE,
           CLUSTERED COLUMNSTORE INDEX )
         AS Select * from T 
+
     - INSERT INTO dbo.T Select * from dbo.T2
 
   - BucketBy vs partitionBy 
     - Partitions =parallel processing,  buckets = optimize join operations. 
     - Fixed groups of data based on a hash of specified columns
     - df.write.partitionBy("year").bucketBy(2, "id").mode("overwrite").saveAsTable("bucketed_table")
+
   - Partitioning
     - https://learn.microsoft.com/en-us/azure/architecture/best-practices/data-partitioning#designing-partitions
     - horizontal partitioning, you can improve the performance of the data load
@@ -173,7 +167,9 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
 
     - Functional Paritioning
         - Logic based 
-  - Partition switching can be used to quickly remove or replace a section of a table
+  - Partition switching 
+	- Remove or replace a section of a table with dummy
+	Steps: 
 	- CREATE TABLE dbo.FactInternetSales_20000101 WITH    (  same as main table )
 	- ALTER TABLE FactInternetSales SWITCH PARTITION 2 
 		TO 
@@ -185,25 +181,6 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
     - Hash = querying Easier
     - Round robin =loading data is simple
     - Replicated = small tables.
-
-  - Change data capture VS change tracking Vs merge replication Vs snapshot replication
-    - Change Tracking: 
-      - Uses a internal log 
-      - lightweight 
-      -  Tracks row was changed without tracking the data that was changed
-
-    - Change Data Capture (CDC):
-        - Internally uses a seperate Table (sys.sp_cdc_enable_table)
-        - Identifies Each Row That Has Changed
-        - Better than Change tracking
-
-    - Merge Replication: 
-      - complex solution 
-      - Merge
-
-    - Snapshot Replication: 
-      - snapshot of the data at a specific point in time 
-      -  does not track changes incrementally.
       
   - CREATE MATERIALIZED VIEW mv WITH (distribution = hash(c), FOR_APPEND) AS SELECT * FROM T  ;
     - Data with snapshot is created 
@@ -286,9 +263,6 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
 		-  Configure Blob Storage for intermiitend result
 -------------------
 - Stream Analytics (OnDemand - video 9)
-  - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-solution-patterns
-  - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-parallelization
-  - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-window-functions
   - Create Stream Analytics in Azure Portal
     - Stream Analyics > HomePage (No Seperate GUI)
     - Create input (Event Hub/IoT Hub/ Blob /kafka)
@@ -328,8 +302,7 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
   - Streaming : When the Backlogged Input Events metric > zero, the job is not able to process all incoming events.Increase SU (Streaming Units) 
 -------------------
 - Microsoft Purview (LeanIX ) 
-	- https://learn.microsoft.com/en-us/purview/concept-data-lineage
-	- https://learn.microsoft.com/en-us/purview/unified-catalog-search
+
 	- Catalog and Governance and Audit
 	- data lineage (master key in the Azure SQL database for lineage to work.)
 	- Governance (Microsoft Purview governance portal)
@@ -401,7 +374,6 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
     Select id FROM T2
 -------------------
 
----------------
 ## Glossary
 ### General
 - Data integration:--	  Establishing links between data
@@ -431,3 +403,47 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
 - SAS:--	A security token that can be attached to a URI (bearer)
 - Transparent data encryption:-- Encrypting data at rest (Dedicated and Blob) ie., Complete Container is encrypted
 
+-----------------------
+## Links
+- storage accounts \ PolyBase
+  - https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview
+  - https://learn.microsoft.com/en-us/training/modules/secure-azure-storage-account
+  - https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-access-control
+- Synapse :
+  - https://learn.microsoft.com/en-us/training/modules/secure-data-warehouse-azure-synapse-analytics/2-understand-network-security-options
+- Stream Analytics (OnDemand - video 9)
+	  - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-solution-patterns
+	  - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-parallelization
+	  - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-window-functions
+- Purview
+	- https://learn.microsoft.com/en-us/purview/concept-data-lineage
+	- https://learn.microsoft.com/en-us/purview/unified-catalog-search
+- storage accounts \ PolyBase
+	  - https://learn.microsoft.com/en-us/azure/storage/common/storage-account-overview
+	  - https://learn.microsoft.com/en-us/training/modules/secure-azure-storage-account
+	  - https://learn.microsoft.com/en-us/azure/storage/blobs/data-lake-storage-access-control
+- Dedicated SQL
+	  - Change data capture VS change tracking Vs merge replication Vs snapshot replication
+	    - Change Tracking: 
+	      - Uses a internal log 
+	      - lightweight 
+	      -  Tracks row was changed without tracking the data that was changed
+	
+	    - Change Data Capture (CDC):
+	        - Internally uses a seperate Table (sys.sp_cdc_enable_table)
+	        - Identifies Each Row That Has Changed
+	        - Better than Change tracking
+	
+	    - Merge Replication: 
+	      - complex solution 
+	      - Merge
+	
+	    - Snapshot Replication: 
+	      - snapshot of the data at a specific point in time 
+	      -  does not track changes incrementally.
+	  - https://learn.microsoft.com/en-us/azure/architecture/best-practices/data-partitioning
+	  - https://learn.microsoft.com/en-us/training/modules/choose-storage-approach-in-azure/
+	  - https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/massively-parallel-processing-mpp-architecture 
+	  - https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/quickstart-scale-compute-tsql#check-dedicated-sql-pool-formerly-sql-dw-state
+	  - https://learn.microsoft.com/en-us/training/modules/load-optimize-data-into-relational-data-warehouse/
+	  - https://learn.microsoft.com/en-us/azure/synapse-analytics/sql-data-warehouse/sql-data-warehouse-manage-monitor#monitor-waiting-queries
