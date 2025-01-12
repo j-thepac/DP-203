@@ -205,6 +205,10 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
 - Synapse :
   - https://learn.microsoft.com/en-us/training/modules/secure-data-warehouse-azure-synapse-analytics/2-understand-network-security-options
   - Lookup : Denormalize
+  - Compute 
+	Linked Service : Service to Connect to different DataSources (External And Internal)
+	Integrated Runtime : Compute which executes the DataFlow
+	Source(Linked Service) > Operation > Sink(Linked Service)
   - security options
     - Firewall rules : Type of IP that is allowed  Eg : Synapse > Security > Firewall > Add IPS
     - Virtual networks (VPN) : 
