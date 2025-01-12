@@ -148,7 +148,8 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
     - INSERT INTO dbo.T Select * from dbo.T2
 
   - BucketBy vs partitionBy 
-    - Bucket Same values in 1 Bucket
+    - Partitions =parallel processing,  buckets = optimize join operations. 
+    - Fixed groups of data based on a hash of specified columns
     - df.write.partitionBy("year").bucketBy(2, "id").mode("overwrite").saveAsTable("bucketed_table")
   - Partitioning
     - https://learn.microsoft.com/en-us/azure/architecture/best-practices/data-partitioning#designing-partitions
