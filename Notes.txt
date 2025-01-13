@@ -128,6 +128,7 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
 	 - Node2  (Distribution2 = Partition1 , Partition2...) .... 
 	 - 
 	 - Node 60 (....
+  1 Distribution = 1 Million Records
   - Monitor Performance
 	OPTION :SELECT * FROM a , b where a.id = b.id
 		OPTION (Label = 'CustJoin', HASH JOIN) #Instruct to Use Hash join  
