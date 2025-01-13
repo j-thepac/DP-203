@@ -22,7 +22,11 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
   - Able to Query using Serverless
   - Used for unplanned or "bursty" workloads , Data exploration , Data transformation , Data Warehouse
   - Larger files lead to better performance and reduced costs.
-  - locally redundant storage (LRS),/ Geo-redundant storage (GRS) option
+  - Redundant
+	LRS 3 copies in 1 region	
+	ZRS =3 copies across zones	
+	GRS=3 times in 1 region and 3 times in another region
+	GZRS=3 copies across zones and 3 times in another region
   - Hadoop Distributed File System (HDFS) 
   - Access control lists (ACLs) and Portable Operating System Interface (POSIX) 
   - Advanced Threat Protection using Microsoft Defender for Cloud (Detects unusual and potentially harmful attempts to access or exploit storage accounts)
