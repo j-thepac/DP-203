@@ -128,7 +128,15 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
 	 - Node2  (Distribution2 = Partition1 , Partition2...) .... 
 	 - 
 	 - Node 60 (....
-  1 Distribution = 1 Million Records
+  - 1 Distribution = min 1 Million Records
+  - Cluster vs CLuster ColumnStore vs heap(no Index)
+  - 60 Million = minimum  number of rows for clustered columnstore indexes 
+  - Distribution(for parallel , col =Skey,naturalKey), Index(Searching) , Partition (part of distribution , col=Range Col )
+  - Sys Objects
+    - SELECT name FROM sys.objects WHERE type = 'V' AND name LIKE 'dm_pdw%';
+    - EXEC sp_help 'sys.objects';
+
+
   - Monitor Performance
 	OPTION :SELECT * FROM a , b where a.id = b.id
 		OPTION (Label = 'CustJoin', HASH JOIN) #Instruct to Use Hash join  
@@ -140,58 +148,53 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
 	sys.dm_pdw_waits:amount of time that requests have spent waiting for resources.
 	DBCC PDW_SHOWEXECUTIONPLAN: Query Plan and the estimated costs
 
-  - Distribution(for parallel , col =Skey,naturalKey), Index(Searching) , Partition (part of distribution , col=Range Col )
-  - Sys Objects
-    - SELECT name FROM sys.objects WHERE type = 'V' AND name LIKE 'dm_pdw%';
-    - EXEC sp_help 'sys.objects';
+
 
   - Queries
-    - COPY INTO [dbo].[T] FROM 'https://BlobStorage.blob.core.windows.net/Folder'
-      WITH ( FILE_TYPE = 'CSV',
-            FIELDTERMINATOR = ',',
-            FIELDQUOTE = '')
-    - CREATE TABLE dbo.T2
-        WITH
-        ( DISTRIBUTION = REPLICATE
-          ,CLUSTERED COLUMNSTORE INDEX
-	  ,Partition =C)
-        AS Select * from T 
+	    - COPY INTO [dbo].[T] FROM 'https://BlobStorage.blob.core.windows.net/Folder'
+	      WITH ( FILE_TYPE = 'CSV',
+	            FIELDTERMINATOR = ',',
+	            FIELDQUOTE = '')
+	    - CREATE TABLE dbo.T2
+	        WITH
+	        ( DISTRIBUTION = REPLICATE
+	          ,CLUSTERED COLUMNSTORE INDEX
+		  ,Partition =C)
+	        AS Select * from T 
 
-    - INSERT INTO dbo.T Select * from dbo.T2
+	    - INSERT INTO dbo.T Select * from dbo.T2
+		
 
   - Partitioning (stored within a distribution ,  )
-    - Use a range column ( Timestamp )
-    - https://learn.microsoft.com/en-us/azure/architecture/best-practices/data-partitioning#designing-partitions
-    - horizontal partitioning, you can improve the performance of the data load
-    -  vertical partitioning, different parts of the database can be isolated from each other to improve cache use.
-    - Sharding  
-        - horizontal partitions (each record into different Partition) 
-        - Same Schema
-        - https://learn.microsoft.com/en-us/azure/architecture/patterns/sharding
-        - WITH ( PARTITION KEY = C);
-        - Types
-          - LookUp : 
-              - Requires look Up table
-              -  shard key value maps to a physical partition
-          - Hash partitioning : Use hash function ,even data and load distribution.
-          - Range partitioning : 1 to n in shard A ,  n+1 to m  stored in shard B
-
-    - Vertical Paritioning 
-        - Each Column of Data in Seperate Partition /Shard eg: Avro
-        - When Only particular columns are important 
-
-    - Functional Paritioning
-        - Logic based 
-  - Partition switching 
-	- Remove or replace a section of a table with dummy
-	Steps: 
-	- CREATE TABLE dbo.FactInternetSales_20000101 WITH    (  same as main table )
-	- ALTER TABLE FactInternetSales SWITCH PARTITION 2 
-		TO 
-		FactInternetSales_20000101 PARTITION 2;
+	    - Use a range column ( Timestamp  , GroupID )
+	    - https://learn.microsoft.com/en-us/azure/architecture/best-practices/data-partitioning#designing-partitions
+	    - horizontal partitioning, you can improve the performance of the data load
+	    -  vertical partitioning, different parts of the database can be isolated from each other to improve cache use.
+	    - Sharding  
+	        - horizontal partitions (each record into different Partition) 
+	        - Same Schema
+	        - https://learn.microsoft.com/en-us/azure/architecture/patterns/sharding
+	        - WITH ( PARTITION KEY = C);
+	        - Types
+	          - LookUp : 
+	              - Requires look Up table
+	              -  shard key value maps to a physical partition
+	          - Hash partitioning : Use hash function ,even data and load distribution.
+	          - Range partitioning : 1 to n in shard A ,  n+1 to m  stored in shard B
 	
-  - Cluster vs CLuster ColumnStore vs heap(no Index)
-  -  60 Million = minimum  number of rows for clustered columnstore indexes 
+	    - Vertical Paritioning 
+	        - Each Column of Data in Seperate Partition /Shard eg: Avro
+	        - When Only particular columns are important 
+	
+	    - Functional Paritioning
+	        - Logic based 
+	  - Partition switching 
+		- Remove or replace a section of a table with dummy
+		Steps: 
+		- CREATE TABLE dbo.FactInternetSales_20000101 WITH    (  same as main table )
+		- ALTER TABLE FactInternetSales SWITCH PARTITION 2 
+			TO 
+			FactInternetSales_20000101 PARTITION 2;
 
   - Distribution
     - Hash 
