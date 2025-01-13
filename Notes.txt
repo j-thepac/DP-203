@@ -42,9 +42,8 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
       - Service Principle : Functional ID created in Azure Active Directory
       - Managed Identity : Functional ID managed by Azure 
       - Firewall (Network) : Range of IP addr (Storage > Networking > )
-      - RBAC (Role-Based Access Control)based on roles
-      - POSIX (Portable Operating System Interface) ie., chmod -R 755 my_directory
-      - ACL (access control list): fine-grained access control at folder level
+      - RBAC (Role-Based Access Control): based on roles
+      - ACL (access control list): Each file and directory in your storage account  (chmod)
       - SAS (Shared Access Signatures)
         - token to grantaccess attached to a URI.
         - Storage > Security > Access keys > Primary and Secondary
