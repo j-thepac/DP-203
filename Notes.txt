@@ -305,6 +305,7 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
   - parallelization = partition key
   - Each Statement (select )= 1 SU (Streaming Unit ) and Each partition = 1 SU 
   - Streaming : When the Backlogged Input Events metric > zero, the job is not able to process all incoming events.Increase SU (Streaming Units)
+  - Metric - SU utilization metric , Water Mark Delay , BackLogged Input Events 
   - Temporal Window (Time Based):
     - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-window-functions
     - Types :
@@ -333,7 +334,6 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
   - Streaming : When the Backlogged Input Events metric > zero, the job is not able to process all incoming events.Increase SU (Streaming Units) 
 -------------------
 - Microsoft Purview (LeanIX ) 
-
 	- Catalog and Governance and Audit
 	- data lineage (master key in the Azure SQL database for lineage to work.)
 	- Governance (Microsoft Purview governance portal)
