@@ -137,7 +137,7 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
   - Sys Objects
     - SELECT name FROM sys.objects WHERE type = 'V' AND name LIKE 'dm_pdw%';
     - EXEC sp_help 'sys.objects';
-
+  - Parition Elimination =query + where clause on partiton column 
 
   - Monitor Performance
 	OPTION :SELECT * FROM a , b where a.id = b.id
