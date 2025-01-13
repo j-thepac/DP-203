@@ -181,7 +181,8 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
 	              -  shard key value maps to a physical partition
 	          - Hash partitioning : Use hash function ,even data and load distribution.
 	          - Range partitioning : 1 to n in shard A ,  n+1 to m  stored in shard B
-	
+		  - Shards can be moved to other DB using split merge tool 
+		
 	    - Vertical Paritioning 
 	        - Each Column of Data in Seperate Partition /Shard eg: Avro
 	        - When Only particular columns are important 
