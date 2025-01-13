@@ -327,8 +327,10 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
 		        ``
         - Hopping : Tumbling + Overlapping for standard time with previous Window
 		GROUP BY HoppingWindow(second, 60, 30)
-        - Sliding : Window is created by an event and window exists for set time 
-		GROUP BY slidingwindow(minute,1)
+        - Sliding : 
+		- Window is created by an event and window exists for set time 
+		- Event can belong to more than 1 sliding window 
+		- GROUP BY slidingwindow(minute,1)
         - Session : 
 		Window Cannot Overlap 
 		Stops when stream stops and Resume if stream resumes 
