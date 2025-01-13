@@ -139,7 +139,7 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
 	sys.dm_pdw_waits:amount of time that requests have spent waiting for resources.
 	DBCC PDW_SHOWEXECUTIONPLAN: Query Plan and the estimated costs
 
-  - Distribution(use:parallel , col =Skey,naturalKey), Index(Searching) , Partition (inside distribution , col=Range Col )
+  - Distribution(for parallel , col =Skey,naturalKey), Index(Searching) , Partition (part of distribution , col=Range Col )
   - Sys Objects
     - SELECT name FROM sys.objects WHERE type = 'V' AND name LIKE 'dm_pdw%';
     - EXEC sp_help 'sys.objects';
@@ -157,8 +157,6 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
         AS Select * from T 
 
     - INSERT INTO dbo.T Select * from dbo.T2
-
-
 
   - Partitioning (stored within a distribution ,  )
     - Use a range column ( Timestamp )
@@ -194,8 +192,8 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
   - Cluster vs CLuster ColumnStore vs heap(no Index)
   -  60 Million = minimum  number of rows for clustered columnstore indexes  
   - Distribution
-    - Hash = querying Easier
-    - Round robin =loading data is simple
+    - Hash = querying Easier , Large Tables and Good perofrmance for Joins 
+    - Round robin =loading data is simple ,  small Tables and bad performance for Joins 
     - Replicated = small tables.
       
   - CREATE MATERIALIZED VIEW mv WITH (distribution = hash(c), FOR_APPEND) AS SELECT * FROM T  ;
