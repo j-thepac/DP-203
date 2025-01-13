@@ -310,7 +310,7 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
     - https://learn.microsoft.com/en-us/azure/stream-analytics/stream-analytics-window-functions
     - Types :
         - Tumbling : Aggregate all events for that same time interval. 
-			-- The number of cars within a three-minute window going through a toll station that has three tollbooths":
+			-- The number of cars in a 3 minute window going through a toll station = three tollbooths":
 		        SELECT COUNT(*) AS Count, TollBoothId into stream_analytics 
 			INTO [output] 
 		        FROM iot_event_hub 
