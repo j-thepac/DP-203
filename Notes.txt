@@ -191,10 +191,18 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
 		FactInternetSales_20000101 PARTITION 2;
 	
   - Cluster vs CLuster ColumnStore vs heap(no Index)
-  -  60 Million = minimum  number of rows for clustered columnstore indexes  
+  -  60 Million = minimum  number of rows for clustered columnstore indexes 
+
   - Distribution
-    - Hash = querying Easier , Large Tables and Good perofrmance for Joins 
-    - Round robin =loading data is simple ,  small Tables and bad performance for Joins 
+    - Hash 
+	- querying Easier
+	- Large Tables
+	- Good perfrmance for Joins 
+	- Natural /Skey 
+    - Round robin 
+	- loading data is simple 
+	- small Tables 
+	- bad performance for Joins 
     - Replicated = small tables.
       
   - CREATE MATERIALIZED VIEW mv WITH (distribution = hash(c), FOR_APPEND) AS SELECT * FROM T  ;
