@@ -196,13 +196,12 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
 	
 	    - Functional Paritioning
 	        - Logic based 
-	  - Partition switching 
-		- Remove or replace a section of a table with dummy
+	  - Partition switching : Deleting / Replaceing Data faster 
 		Steps: 
-		- CREATE TABLE dbo.FactInternetSales_20000101 WITH    (  same as main table )
-		- ALTER TABLE FactInternetSales SWITCH PARTITION 2 
+		- CREATE TABLE dbo.temp WITH ( same as main table )
+		- ALTER TABLE main SWITCH PARTITION 2 
 			TO 
-			FactInternetSales_20000101 PARTITION 2;
+			temp PARTITION 2;
 
   - Distribution
     - Hash 
