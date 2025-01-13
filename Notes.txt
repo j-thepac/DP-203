@@ -28,7 +28,7 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
 	GRS=3 times in 1 region and 3 times in another region
 	GZRS=3 copies across zones and 3 times in another region
   - Hadoop Distributed File System (HDFS) 
-  - Access control lists (ACLs) and Portable Operating System Interface (POSIX) 
+  - Access control lists (ACLs) uses  Portable Operating System Interface (POSIX) 
   - Advanced Threat Protection using Microsoft Defender for Cloud (Detects unusual and potentially harmful attempts to access or exploit storage accounts)
   - Permission : Execute (list all files)
 	
