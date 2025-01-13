@@ -217,6 +217,8 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
 
   - Masking
 	- SQL home page > Dynamic Data Masking blade > Add MASk tab
+	- Interger / Monery =0
+	- Datetime = 1900-01-01
 	
   - transparent data encryption (TDE)
 	- TDE encrypts the entire database storage using a symmetric key called a Database Encryption Key (DEK)
