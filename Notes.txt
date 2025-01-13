@@ -53,6 +53,7 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
       - SAS (Shared Access Signatures)
         - token to grantaccess attached to a URI.
         - Storage > Security > Access keys > Primary and Secondary
+	- Can only be revoked 
         - Types
           - Service Level  -allow access to specific resources 
           - Account LEvel - Service level Access + More eg: create file systems.
