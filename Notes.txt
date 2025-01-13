@@ -26,6 +26,7 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
   - Hadoop Distributed File System (HDFS) 
   - Access control lists (ACLs) and Portable Operating System Interface (POSIX) 
   - Advanced Threat Protection using Microsoft Defender for Cloud (Detects unusual and potentially harmful attempts to access or exploit storage accounts)
+  - Permission : Execute (list all files)
 	
   - Partitioning
     - Batch
