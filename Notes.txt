@@ -181,7 +181,7 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
 	        - horizontal partitions (each record into different Partition) 
 	        - Same Schema
 	        - https://learn.microsoft.com/en-us/azure/architecture/patterns/sharding
-	        - WITH ( PARTITION KEY = C);
+	        - PARTITION (C RANGE RIGHT FOR VALUES (10, 20, 30)) -- p1<=10 , 10<p2<=20 .. 
 	        - Types
 	          - LookUp : 
 	              - Requires look Up table
