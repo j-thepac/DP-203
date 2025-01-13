@@ -199,9 +199,8 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
 	  - Partition switching : Deleting / Replaceing Data faster 
 		Steps: 
 		- CREATE TABLE dbo.temp WITH ( same as main table )
-		- ALTER TABLE main SWITCH PARTITION 2 
-			TO 
-			temp PARTITION 2;
+		- ALTER TABLE main 
+			SWITCH PARTITION 2 TO temp PARTITION 2;
 
   - Distribution
     - Hash 
