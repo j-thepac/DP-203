@@ -81,7 +81,7 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
         - Storage Blob Data Owner: All access 
         - Storage Blob Data Contributor:  allows for read, write, and delete 
         - Storage Blob Data Reader allows for read access
-        - Storage Blog Data Delegator : user delegation key ,used to sign SAS tokens.
+        - Storage Blog Data Delegator : generate SAS token only 
 
     - Gen2 
 	- Blob + Hierarchical Namespace option to Enabled
