@@ -13,6 +13,13 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
     - Row Based
     - Easy to Write
 -------------------
+AzCopy : 
+	- Copy Large Amount of Data 
+	- Fastest
+	- When no Schema change is required 
+	- 0 Formatting , o Interference 
+	- Supports : AWS > Az and Az> Az
+---
 - storage accounts \ PolyBase
   - Each storage account located in different geographies 
   - Container = Logical Seperation
