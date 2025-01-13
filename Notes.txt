@@ -299,6 +299,7 @@ Spark Notes: https://docs.google.com/document/d/1J8NaG9RLkVxrOc_4pxjEtxjN7KAPx6S
   - Error: "was sent later than configured tolerance" - Chnage withWaterMark(“15 minutes”) 
   - 6 SUs = 1 node
   - parallelization = partition key
+  - Time = Arrival Time ( TS by Source), Application Time(TS at target)
   - Each Statement (select )= 1 SU (Streaming Unit ) and Each partition = 1 SU 
   - Streaming : When the Backlogged Input Events metric > zero, the job is not able to process all incoming events.Increase SU (Streaming Units)
   - Temporal Window (Time Based):
